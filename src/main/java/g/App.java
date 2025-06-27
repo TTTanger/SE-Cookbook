@@ -18,11 +18,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("main"), 1200, 600);
+        scene = new Scene(loadFXML("main"), 1280, 960);
         scene.getStylesheets().add(getClass().getResource("/g/app.css").toExternalForm());
         stage.setScene(scene);
-        stage.setMinWidth(1200); 
-        stage.setMinHeight(600);  
+        stage.setMinWidth(1280); 
+        stage.setMinHeight(960);  
         stage.show();
     }
 
