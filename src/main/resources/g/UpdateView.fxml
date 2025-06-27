@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:controller="g.controller.UpdateViewController"
+   prefHeight="500.0" prefWidth="640.0"
+   xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+   style="-fx-background-color: #f8f9fa;">
+   <children>
+      <HBox spacing="24.0"
+         AnchorPane.bottomAnchor="30" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="54.0"
+         style="-fx-background-color: #fff; -fx-background-radius: 16; -fx-effect: dropshadow(gaussian, #b0b0b0, 12, 0.2, 0, 2); -fx-padding: 24;">
+         <children>
+            <VBox spacing="16.0" alignment="CENTER" prefWidth="200.0" maxWidth="220.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="Please upload your image"
+                     style="-fx-font-size: 14px; -fx-text-fill: #495057;"/>
+                  <StackPane prefWidth="158" prefHeight="130"
+                     style="-fx-background-color: #f1f3f5; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, #b0b0b0, 6, 0.1, 0, 1);">
+                     <children>
+                        <ImageView fx:id="imgPreview" fitHeight="120.0" fitWidth="148.0"
+                           style="-fx-background-radius: 12;" preserveRatio="true"/>
+                        <Label fx:id="imgHint" text="No image" style="-fx-text-fill: #adb5bd; -fx-font-size: 13px;"/>
+                     </children>
+                  </StackPane>
+                  <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#uploadClicked"
+                     text="Upload"
+                     style="-fx-background-radius: 8; -fx-background-color: #228be6; -fx-text-fill: white;"/>
+               </children>
+            </VBox>
+            <VBox spacing="10.0" fillWidth="true" alignment="TOP_LEFT">
+               <children>
+                  <HBox spacing="10.0">
+                     <Label text="Name" style="-fx-font-size: 13px;"/>
+                     <TextField fx:id="titleField" style="-fx-background-radius: 8;" HBox.hgrow="ALWAYS"/>
+                  </HBox>
+                  <HBox spacing="10.0">
+                     <Label text="Preptime" style="-fx-font-size: 13px;"/>
+                     <TextField fx:id="prepTimeField" style="-fx-background-radius: 8;" maxWidth="60"/>
+                     <Label text="Cooktime" style="-fx-font-size: 13px;"/>
+                     <TextField fx:id="cookTimeField" style="-fx-background-radius: 8;" maxWidth="60"/>
+                     <Label text="Serve" style="-fx-font-size: 13px;"/>
+                     <TextField fx:id="serveField" style="-fx-background-radius: 8;" maxWidth="60"/>
+                  </HBox>
+                  <Label text="Instruction" style="-fx-font-size: 13px;"/>
+                  <TextArea fx:id="instructionField" prefHeight="60.0" style="-fx-background-radius: 8;"/>
+                  <Label text="Ingredients" style="-fx-font-size: 13px;"/>
+                  <ScrollPane fx:id="ingredientPane" fitToWidth="true" prefHeight="60.0" style="-fx-background-radius: 8;">
+                     <content>
+                        <VBox fx:id="ingredientContainer"/>
+                     </content>
+                  </ScrollPane>
+                  <Button fx:id="submitButton"
+                     mnemonicParsing="false" onAction="#handleUpdateRecipe" prefHeight="28.0"
+                     prefWidth="70.0" text="Done"
+                     style="-fx-background-radius: 8; -fx-background-color: #51cf66; -fx-text-fill: white;"/>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Label layoutX="268.0" layoutY="14.0" prefHeight="31.0" prefWidth="120.0" text="Update"
+         style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #228be6;">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
