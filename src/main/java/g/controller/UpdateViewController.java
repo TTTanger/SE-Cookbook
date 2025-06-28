@@ -1,13 +1,13 @@
 package g.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import g.dto.RecipeDetailRequest;
 import g.dto.RecipeDetailResponse;
@@ -21,12 +21,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.stage.FileChooser;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class UpdateViewController {
 
@@ -239,7 +239,7 @@ public class UpdateViewController {
         String cookTime = cookTimeField.getText();
         String serve = serveField.getText();
         String instruction = instructionField.getText();
-        String imgAddr = uploadedImgPath != null ? uploadedImgPath : "https://i.imgur.com/3dVB5B9.jpg";
+        String imgAddr = uploadedImgPath;
 
         // 校验主表单
         if (title == null || title.trim().isEmpty()) {
@@ -295,10 +295,10 @@ public class UpdateViewController {
                     new Alert(Alert.AlertType.ERROR, "Ingredient Name cannot be empty").showAndWait();
                     return;
                 }
-                if (unitField == null || unitField.getText().trim().isEmpty()) {
-                    new Alert(Alert.AlertType.ERROR, "Ingredient Unit cannot be empty").showAndWait();
-                    return;
-                }
+                //if (unitField == null || unitField.getText().trim().isEmpty()) {
+                //    new Alert(Alert.AlertType.ERROR, "Ingredient Unit cannot be empty").showAndWait();
+                //    return;
+                //}
                 int quantity;
                 try {
                     quantity = Integer.parseInt(quantityField.getText());
