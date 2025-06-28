@@ -24,7 +24,7 @@
     <VBox fx:id="rightPane" maxWidth="781.0" minWidth="435.0" prefHeight="800.0" prefWidth="781.0" spacing="10.0" style="-fx-padding: 24 24 24 0; -fx-background-color: #ffffff; -fx-background-radius: 12;">
         <fx:include fx:id="recipeDetailCard" source="RecipeDetailCard.fxml" />
       <HBox.margin>
-         <Insets top="-2.0" />
+         <Insets />
       </HBox.margin>
     </VBox>
 </HBox>
