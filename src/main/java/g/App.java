@@ -2,12 +2,12 @@ package g;
 
 import java.io.IOException;
 
+import g.utils.DBUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import g.utils.DBUtil;
 
 /**
  * JavaFX App
@@ -18,7 +18,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("main"), 1280, 960);
+        scene = new Scene(loadFXML("main"), 1350, 800);
         scene.getStylesheets().add(getClass().getResource("/g/app.css").toExternalForm());
         stage.setScene(scene);
         stage.setMinWidth(1280); 
