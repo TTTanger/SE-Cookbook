@@ -34,7 +34,6 @@ import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.StackPane;
 
 /**
  * Controller for the recipe detail card view. Handles the display and interaction of recipe details.

@@ -10,34 +10,70 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * JavaFX App
+ * Main JavaFX application class for the Cookbook application.
+ * This class initializes the application, sets up the main window,
+ * and manages scene transitions.
+ * 
+ * @author Junzhe Luo
+ * @since 2025-6-15
  */
 public class App extends Application {
 
     private static Scene scene;
+    
+    private static final int WINDOW_WIDTH = 1350;
+    private static final int WINDOW_HEIGHT = 800;
+    private static final int MIN_WIDTH = 1280;
+    private static final int MIN_HEIGHT = 960;
 
+    /**
+     * Initializes and displays the main application window.
+     * Sets up the scene, stylesheets, and window properties.
+     * 
+     * @param stage the primary stage for the application
+     * @throws IOException if the FXML file cannot be loaded
+     */
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("main"), 1350, 800);
+        scene = new Scene(loadFXML("main"), WINDOW_WIDTH, WINDOW_HEIGHT);
         scene.getStylesheets().add(getClass().getResource("/g/app.css").toExternalForm());
+        
         stage.setScene(scene);
-        stage.setMinWidth(1280); 
-        stage.setMinHeight(960);  
+        stage.setMinWidth(MIN_WIDTH); 
+        stage.setMinHeight(MIN_HEIGHT);  
         stage.show();
     }
 
+    /**
+     * Changes the root node of the current scene to the specified FXML view.
+     * 
+     * @param fxml the name of the FXML file (without extension)
+     * @throws IOException if the FXML file cannot be loaded
+     */
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
+    /**
+     * Loads an FXML file and returns the root node.
+     * 
+     * @param fxml the name of the FXML file (without extension)
+     * @return the root node of the loaded FXML
+     * @throws IOException if the FXML file cannot be loaded
+     */
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
+    /**
+     * Main entry point for the application.
+     * Initializes the database and launches the JavaFX application.
+     * 
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         DBUtil.initializeDatabase();
         launch();
     }
-
 }

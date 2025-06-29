@@ -15,6 +15,12 @@
     -fx-text-fill: #343a40;
     -fx-padding: 0 0 12 0;
 }
+.info-label {
+    -fx-font-size: 18px;      
+    -fx-font-weight: bold;    
+    -fx-font-family: "Arial"; 
+    -fx-text-fill: #444444;  
+}
 .section-label {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
@@ -102,4 +108,12 @@
 .btn-delete:hover {
     -fx-background-color: #ffd43b !important;
     -fx-text-fill: #fff !important;
+}
+
+.time-unit {
+    -fx-font-size: 13px;
+    -fx-text-fill: #888;
+    -fx-translate-y: 2;
+    -fx-padding: 0 0 0 2;
+    -fx-font-family: "Arial";
 }

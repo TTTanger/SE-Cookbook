@@ -9,7 +9,6 @@
       spacing="10" alignment="CENTER_LEFT"
       style="-fx-padding: 10 16; -fx-background-color: #f8f9fa; -fx-background-radius: 8;">
     <TextField fx:id="searchField" promptText="Search..." HBox.hgrow="ALWAYS"
-               onKeyPressed="#onEnterPressed"
                style="-fx-background-radius: 8; -fx-font-size: 14px;"/>
     <Button fx:id="clearButton" onAction="#clearSearch" styleClass="button" text="✕" />
     <Button fx:id="searchButton" onAction="#performSearch" styleClass="button" text="🔍" />

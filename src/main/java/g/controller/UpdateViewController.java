@@ -309,7 +309,6 @@ public class UpdateViewController {
                 List<javafx.scene.Node> fields = hbox.getChildren();
                 TextField nameField = null;
                 TextField quantityField = null;
-                TextField unitField = null;
                 int fieldCount = 0;
                 for (javafx.scene.Node child : fields) {
                     if (child instanceof TextField tf) {
@@ -317,9 +316,7 @@ public class UpdateViewController {
                             nameField = tf;
                         } else if (fieldCount == 1) {
                             quantityField = tf;
-                        } else if (fieldCount == 2) {
-                            unitField = tf;
-                        }
+                        } 
                         fieldCount++;
                     }
                 }

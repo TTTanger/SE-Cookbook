@@ -62,29 +62,29 @@
                         </rowConstraints>
                         <children>
                            <Label styleClass="section-label" text="Title:" wrapText="true" GridPane.rowIndex="0" />
-                           <Label fx:id="title" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                           <Label fx:id="title" GridPane.columnIndex="1" styleClass="info-label" GridPane.rowIndex="0" />
                            <Label styleClass="section-label" text="Prep Time:" wrapText="true" GridPane.rowIndex="1" />
-                           <Label fx:id="prepTime" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <HBox spacing="3" alignment="BOTTOM_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <children>
+                                 <Label fx:id="prepTime" styleClass="info-label" />
+                                 <Label text="minutes" styleClass="time-unit" />
+                              </children>
+                           </HBox>
                            <Label styleClass="section-label" text="Cook Time:" wrapText="true" GridPane.rowIndex="2" />
-                           <Label fx:id="cookTime" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           <HBox spacing="3" alignment="BOTTOM_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <children>
+                                 <Label fx:id="cookTime" styleClass="info-label" />
+                                 <Label text="minutes" styleClass="time-unit" />
+                              </children>
+                           </HBox>
                            <Label styleClass="section-label" text="Servings:" wrapText="true" GridPane.rowIndex="3" />
-                           <Spinner fx:id="serveSpinner" editable="true" minWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                           <Spinner fx:id="serveSpinner" editable="true" minWidth="200.0" GridPane.columnIndex="1" styleClass="info-label" GridPane.rowIndex="3" />
                            <Label styleClass="section-label" text="Ingredients:" wrapText="true" GridPane.rowIndex="4" />
                            <VBox fx:id="ingredientsBox" spacing="2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                            <Label styleClass="section-label" text="Instructions:" wrapText="true" GridPane.rowIndex="5" />
                            <Label fx:id="instructionsLabel" wrapText="true" styleClass="instructions-label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                            <Label styleClass="section-label" text="Image:" GridPane.rowIndex="6" />
                            <ImageView fx:id="imgView" fitHeight="200" fitWidth="320" styleClass="recipe-image" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                           <AnchorPane prefWidth="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                              <children>
-                                 <Label layoutX="23.0" layoutY="4.0" text="minutes" />
-                              </children>
-                           </AnchorPane>
-                           <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2">
-                              <children>
-                                 <Label layoutX="23.0" layoutY="4.0" text="minutes" />
-                              </children>
-                           </AnchorPane>
                         </children>
                      </GridPane>
                   </children>
