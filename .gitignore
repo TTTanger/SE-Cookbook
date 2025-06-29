@@ -75,7 +75,7 @@ javafx-sdk*/
 
 # Executables
 *.exe
-*.bat
+
 
 # Misc
 *.swp
