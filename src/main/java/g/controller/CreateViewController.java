@@ -60,6 +60,9 @@ public class CreateViewController {
     /** Button for uploading an image */
     @FXML
     private Button uploadButton;
+    /** Button for clearing the uploaded image */
+    @FXML
+    private Button clearImageButton;
     /** Path of the uploaded image */
     private String uploadedImgPath = null;
     /** Callback function for successful creation */
@@ -240,6 +243,18 @@ public class CreateViewController {
     }
 
     /**
+     * Handles the clear image button click event. Clears the uploaded image and preview.
+     */
+    @FXML
+    public void clearImageClicked() {
+        uploadedImgPath = null;
+        imgPreview.setImage(null);
+        imgHint.setVisible(true);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Image cleared successfully!", ButtonType.OK);
+        alert.showAndWait();
+    }
+
+    /**
      * Adds a new ingredient row to the ingredient container.
      */
     @FXML
@@ -248,7 +263,7 @@ public class CreateViewController {
         TextField nameField = new TextField();
         nameField.setPromptText("Name");
         TextField quantityField = new TextField();
-        quantityField.setPromptText("Amount");
+        quantityField.setPromptText("Amount(Only Integer)");
         TextField unitField = new TextField();
         unitField.setPromptText("Unit");
         Button addButton = new Button("+");

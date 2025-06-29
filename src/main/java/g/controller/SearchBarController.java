@@ -3,22 +3,27 @@ package g.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 
+/**
+ * Controller for the search bar component.
+ * Handles search functionality and clear search operations.
+ */
 public class SearchBarController {
 
     @FXML
     private TextField searchField;
 
-    /**
-     * 初始化方法，可以设置按钮点击和回车事件
-     */
     @FXML
-    public void initialize() {
-        System.out.println("Initializing SearchBarController");
-    }
+    private Button searchButton;
+
+    @FXML
+    private Button clearButton;
+
+    private SearchCallback callback;
 
     /**
-     * 执行搜索逻辑
+     * Execute search logic
      */
     @FXML
     public void performSearch(ActionEvent event) {
@@ -28,21 +33,36 @@ public class SearchBarController {
         }
     }
 
+    /**
+     * Clear search field
+     */
     @FXML
     public void clearSearch(ActionEvent event) {
         searchField.clear();
+        if (callback != null) {
+            callback.onSearch(""); // Trigger search with empty string to clear results
+        }
     }
 
-    // 回调接口
-    public interface ActionCallback {
-
-        void onSearch(String keyword);
+    /**
+     * Handle enter key press in search field
+     */
+    @FXML
+    public void onEnterPressed() {
+        performSearch(null);
     }
 
-    private ActionCallback callback;
-
-    public void setCallback(ActionCallback callback) {
+    /**
+     * Set the search callback
+     */
+    public void setCallback(SearchCallback callback) {
         this.callback = callback;
     }
 
+    /**
+     * Callback interface for search operations
+     */
+    public interface SearchCallback {
+        void onSearch(String keyword);
+    }
 }

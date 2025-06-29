@@ -35,16 +35,16 @@ public class CategoryService {
     // }
 
     public boolean updateRecipeToCategory(List<Integer> categoryIds, int recipeId) {
-        // 先查一下当前有哪些分类
+        // First check what categories are currently available
         List<Integer> currentCategoryIds = categoryRecipeDAO.getCategoryIdsByRecipeId(recipeId);
 
-        // 如果当前本来就没有分类且也不需要添加，直接返回true
+        // If there are no categories currently and none need to be added, return true directly
         if ((currentCategoryIds == null || currentCategoryIds.isEmpty()) && (categoryIds == null || categoryIds.isEmpty())) {
             System.out.println("No categories to update for recipe " + recipeId);
             return true;
         }
 
-        // 只有当前有分类时才清空
+        // Only clear if there are categories currently
         boolean ifClear = true;
         if (currentCategoryIds != null && !currentCategoryIds.isEmpty()) {
             ifClear = categoryRecipeDAO.clearCategoriesForRecipe(recipeId);
@@ -54,7 +54,7 @@ public class CategoryService {
             }
         }
 
-        // 需要添加新分类时才添加
+        // Only add when new categories need to be added
         if (categoryIds != null && !categoryIds.isEmpty()) {
             boolean ifAdd = categoryRecipeDAO.addToCategory(categoryIds, recipeId);
             if (ifAdd) {
@@ -66,7 +66,7 @@ public class CategoryService {
             }
         }
 
-        // 如果只是清空分类，也算成功
+        // If just clearing categories, it's also considered successful
         return ifClear;
     }
 

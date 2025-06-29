@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Label;
 
 /**
  * Controller for the category list view. Handles the display and selection of categories.
@@ -25,6 +26,9 @@ public class CategoryListController implements Initializable {
     /** ListView for displaying categories */
     @FXML
     private ListView<CategoryResponse> listView;
+
+    /** Label for empty category message on the left */
+    private Label leftEmptyLabel;
 
     /**
      * Constructor initializes the category service.
@@ -83,7 +87,25 @@ public class CategoryListController implements Initializable {
         List<CategoryResponse> rawList = fetchAllCategories();
         ObservableList<CategoryResponse> observableList = FXCollections.observableArrayList(rawList);
         listView.setItems(observableList);
+        if (leftEmptyLabel != null) {
+            if (observableList.isEmpty()) {
+                leftEmptyLabel.setVisible(true);
+                leftEmptyLabel.setManaged(true);
+            } else {
+                leftEmptyLabel.setVisible(false);
+                leftEmptyLabel.setManaged(false);
+            }
+        }
         System.out.println("Category ListView refreshed!");
+    }
+
+    /**
+     * Gets the name of the currently selected category.
+     * @return The name of the selected category, or null if no category is selected
+     */
+    public String getSelectedCategoryName() {
+        CategoryResponse selected = listView.getSelectionModel().getSelectedItem();
+        return selected != null ? selected.getCategoryName() : null;
     }
 
     /**
@@ -100,5 +122,9 @@ public class CategoryListController implements Initializable {
      */
     public void setOnItemSelected(CategorySelectCallback callback) {
         this.callback = callback;
+    }
+
+    public void setLeftEmptyLabel(Label label) {
+        this.leftEmptyLabel = label;
     }
 }

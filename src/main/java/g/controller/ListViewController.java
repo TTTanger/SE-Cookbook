@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Label;
 
 /**
  * Controller for the recipe list view. Handles the display and selection of recipes.
@@ -28,6 +29,9 @@ public class ListViewController implements Initializable {
     /** ListView for displaying recipes */
     @FXML
     private ListView<RecipeSummaryResponse> listView;
+
+    /** Label for empty recipe list in center pane */
+    private Label centerEmptyLabel;
 
     /**
      * Constructor initializes the recipe and category services.
@@ -90,6 +94,16 @@ public class ListViewController implements Initializable {
         ObservableList<RecipeSummaryResponse> observableList = FXCollections.observableArrayList(rawList);
         listView.setItems(observableList);
         System.out.println("ListView loaded recipes for the category!");
+
+        if (centerEmptyLabel != null) {
+            if (observableList.isEmpty()) {
+                centerEmptyLabel.setVisible(true);
+                centerEmptyLabel.setManaged(true);
+            } else {
+                centerEmptyLabel.setVisible(false);
+                centerEmptyLabel.setManaged(false);
+            }
+        }
     }
 
     /**
@@ -100,6 +114,16 @@ public class ListViewController implements Initializable {
         ObservableList<RecipeSummaryResponse> observableList = FXCollections.observableArrayList(rawList);
         listView.setItems(observableList);
         System.out.println("ListView refreshed!");
+
+        if (centerEmptyLabel != null) {
+            if (observableList.isEmpty()) {
+                centerEmptyLabel.setVisible(true);
+                centerEmptyLabel.setManaged(true);
+            } else {
+                centerEmptyLabel.setVisible(false);
+                centerEmptyLabel.setManaged(false);
+            }
+        }
     }
 
     /**
@@ -112,6 +136,16 @@ public class ListViewController implements Initializable {
         ObservableList<RecipeSummaryResponse> observableList = FXCollections.observableArrayList(rawList);
         listView.setItems(observableList);
         System.out.println("ListView refreshed in category!");
+
+        if (centerEmptyLabel != null) {
+            if (observableList.isEmpty()) {
+                centerEmptyLabel.setVisible(true);
+                centerEmptyLabel.setManaged(true);
+            } else {
+                centerEmptyLabel.setVisible(false);
+                centerEmptyLabel.setManaged(false);
+            }
+        }
     }
 
     /**
@@ -146,6 +180,16 @@ public class ListViewController implements Initializable {
         ObservableList<RecipeSummaryResponse> observableList = FXCollections.observableArrayList(filteredList);
         listView.setItems(observableList);
         System.out.println("ListView filtered and refreshed by keyword!");
+
+        if (centerEmptyLabel != null) {
+            if (observableList.isEmpty()) {
+                centerEmptyLabel.setVisible(true);
+                centerEmptyLabel.setManaged(true);
+            } else {
+                centerEmptyLabel.setVisible(false);
+                centerEmptyLabel.setManaged(false);
+            }
+        }
     }
 
     /**
@@ -166,6 +210,16 @@ public class ListViewController implements Initializable {
         ObservableList<RecipeSummaryResponse> observableList = FXCollections.observableArrayList(filteredList);
         listView.setItems(observableList);
         System.out.println("ListView filtered and refreshed by category and keyword!");
+
+        if (centerEmptyLabel != null) {
+            if (observableList.isEmpty()) {
+                centerEmptyLabel.setVisible(true);
+                centerEmptyLabel.setManaged(true);
+            } else {
+                centerEmptyLabel.setVisible(false);
+                centerEmptyLabel.setManaged(false);
+            }
+        }
     }
 
     /**
@@ -173,6 +227,10 @@ public class ListViewController implements Initializable {
      */
     public void clearList() {
         listView.getItems().clear();
+        if (centerEmptyLabel != null) {
+            centerEmptyLabel.setVisible(false);
+            centerEmptyLabel.setManaged(false);
+        }
     }
 
     /**
@@ -198,5 +256,13 @@ public class ListViewController implements Initializable {
     public void setListViewVisible(boolean visible) {
         listView.setVisible(visible);
         listView.setManaged(visible);
+    }
+
+    /**
+     * Set the label for empty recipe list in center pane.
+     * @param label the label to set
+     */
+    public void setCenterEmptyLabel(Label label) {
+        this.centerEmptyLabel = label;
     }
 }

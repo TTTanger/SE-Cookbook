@@ -84,7 +84,7 @@ public class RecipeService {
         
         for (Ingredient ingredient : ingredients) {
             if (ingredient.getPairId() == 0) {
-                // 新增ingredient
+                // Add new ingredient
                 boolean insertIngredientResult = ingredientDAO.addIngredient(
                         recipe.getRecipeId(),
                         ingredient.getIngredientName(),

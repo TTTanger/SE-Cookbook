@@ -32,7 +32,8 @@
                            </children>
                         </StackPane>
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="34.0" prefHeight="32.0" prefWidth="174.0" style="-fx-font-size: 14px; -fx-text-fill: #495057;" text="Please upload your image" />
-                        <Button fx:id="uploadButton" layoutX="71.0" layoutY="276.0" mnemonicParsing="false" onAction="#uploadClicked" style="-fx-background-radius: 8; -fx-background-color: #228be6; -fx-text-fill: white;" text="Upload" />
+                        <Button fx:id="uploadButton" layoutX="71.0" layoutY="276.0" mnemonicParsing="false" onAction="#uploadClicked" styleClass="button" text="Upload" />
+                        <Button fx:id="clearImageButton" layoutX="71.0" layoutY="310.0" mnemonicParsing="false" onAction="#clearImageClicked" styleClass="button btn-delete" text="Clear Image" />
                      </children>
                   </AnchorPane>
                </children>

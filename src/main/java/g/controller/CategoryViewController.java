@@ -39,6 +39,18 @@ public class CategoryViewController implements Initializable {
     /** Label for empty category message */
     @FXML
     private Label categoryEmptyLabel;
+    /** Button for updating category */
+    @FXML
+    private javafx.scene.control.Button updateCategoryButton;
+    /** Button for deleting category */
+    @FXML
+    private javafx.scene.control.Button deleteCategoryButton;
+    /** Label for empty left pane */
+    @FXML
+    private Label leftEmptyLabel;
+    /** Label for empty recipe list in center pane */
+    @FXML
+    private Label centerEmptyLabel;
 
     /** The currently selected category ID, -1 means none selected */
     private int currentCategoryId = -1;
@@ -50,6 +62,8 @@ public class CategoryViewController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        categoryListController.setLeftEmptyLabel(leftEmptyLabel);
+        listViewController.setCenterEmptyLabel(centerEmptyLabel);
         // Listen for category selection on the left
         categoryListController.setOnItemSelected(category -> {
             if (category != null) {
@@ -65,6 +79,7 @@ public class CategoryViewController implements Initializable {
                 listViewController.clearList(); // Clear middle list when no category selected
                 recipeDetailCardController.showEmptyMessage();
                 // Show empty message, hide list
+                categoryEmptyLabel.setText("Select a Category");
                 categoryEmptyLabel.setVisible(true);
                 categoryEmptyLabel.setManaged(true);
                 listViewController.setListViewVisible(false);
@@ -124,6 +139,95 @@ public class CategoryViewController implements Initializable {
             } else {
                 javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING, "Category name cannot be empty!");
                 alert.showAndWait();
+            }
+        });
+    }
+
+    /**
+     * Handles the update category button click event.
+     */
+    @FXML
+    public void onUpdateClicked() {
+        if (currentCategoryId == -1) {
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING, "Please select a category to update!");
+            alert.showAndWait();
+            return;
+        }
+
+        // Get the selected category name
+        String currentName = categoryListController.getSelectedCategoryName();
+        if (currentName == null) {
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR, "Failed to get selected category!");
+            alert.showAndWait();
+            return;
+        }
+
+        javafx.scene.control.TextInputDialog dialog = new javafx.scene.control.TextInputDialog(currentName);
+        dialog.setTitle("Update Category");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Please enter the new category name:");
+
+        dialog.showAndWait().ifPresent(newName -> {
+            if (newName != null && !newName.trim().isEmpty()) {
+                boolean success = new CategoryService().updateCategory(currentCategoryId, newName.trim());
+                if (success) {
+                    javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION, "Category updated successfully!");
+                    alert.showAndWait();
+                    // Refresh category list
+                    categoryListController.refreshList();
+                } else {
+                    javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR, "Failed to update category!");
+                    alert.showAndWait();
+                }
+            } else {
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING, "Category name cannot be empty!");
+                alert.showAndWait();
+            }
+        });
+    }
+
+    /**
+     * Handles the delete category button click event.
+     */
+    @FXML
+    public void onDeleteClicked() {
+        if (currentCategoryId == -1) {
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING, "Please select a category to delete!");
+            alert.showAndWait();
+            return;
+        }
+
+        // Get the selected category name
+        String categoryName = categoryListController.getSelectedCategoryName();
+        if (categoryName == null) {
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR, "Failed to get selected category!");
+            alert.showAndWait();
+            return;
+        }
+
+        javafx.scene.control.Alert confirmAlert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Confirm Delete");
+        confirmAlert.setHeaderText(null);
+        confirmAlert.setContentText("Are you sure you want to delete category '" + categoryName + "'? This action cannot be undone.");
+
+        confirmAlert.showAndWait().ifPresent(response -> {
+            if (response == javafx.scene.control.ButtonType.OK) {
+                boolean success = new CategoryService().deleteCategory(currentCategoryId);
+                if (success) {
+                    javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION, "Category deleted successfully!");
+                    alert.showAndWait();
+                    // Clear current selection and refresh list
+                    currentCategoryId = -1;
+                    categoryListController.refreshList();
+                    listViewController.clearList();
+                    recipeDetailCardController.showEmptyMessage();
+                    categoryEmptyLabel.setVisible(true);
+                    categoryEmptyLabel.setManaged(true);
+                    listViewController.setListViewVisible(false);
+                } else {
+                    javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR, "Failed to delete category!");
+                    alert.showAndWait();
+                }
             }
         });
     }

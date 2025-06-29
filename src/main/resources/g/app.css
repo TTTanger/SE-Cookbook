@@ -1,23 +1,105 @@
-.button {
-    -fx-background-radius: 8;
-    -fx-background-color: #f1f3f5;
-    -fx-text-fill: #228be6;
-    -fx-font-size: 14px;
-    -fx-padding: 6 18;
-    -fx-border-color: #228be6;
-    -fx-border-radius: 8;
-    -fx-border-width: 1;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, #e7f5ff, 2, 0.1, 0, 1);
+/* Modern UI for Recipe Detail Card */
+.root {
+    -fx-font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    -fx-background-color: #f6f7fb;
+}
+.card {
+    -fx-background-color: #fff;
+    -fx-background-radius: 18;
+    -fx-effect: dropshadow(gaussian, #dee2e6, 12, 0.1, 0, 2);
+    -fx-padding: 24 32 24 32;
+}
+.title-label {
+    -fx-font-size: 22px;
     -fx-font-weight: bold;
-    -fx-background-insets: 0;
-    -fx-border-insets: 0;
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
+    -fx-text-fill: #343a40;
+    -fx-padding: 0 0 12 0;
+}
+.section-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #868e96;
+    -fx-padding: 12 0 6 0;
+}
+.ingredient-header {
+    -fx-background-color: #f1f3f5;
+    -fx-font-weight: bold;
+    -fx-border-radius: 8 8 0 0;
+    -fx-padding: 10 0 10 0;
+    -fx-font-size: 15px;
+    -fx-text-fill: #495057;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1 0 1 0; 
+    -fx-border-style: solid;
 }
 
+.ingredient-row {
+    -fx-background-color: #fff;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 0 0 1 0; 
+    -fx-border-style: solid;
+    -fx-padding: 10 0 10 0;
+    -fx-font-size: 15px;
+    -fx-text-fill: #495057;
+}
+.ingredient-row.alt {
+    -fx-background-color: #f8f9fa;
+}
+.instructions-label {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+    -fx-font-size: 15px;
+    -fx-text-fill: #495057;
+    -fx-effect: dropshadow(gaussian, #dee2e6, 6, 0.1, 0, 1);
+}
+.recipe-image {
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, #dee2e6, 8, 0.1, 0, 2);
+    -fx-padding: 8;
+}
+
+.button {
+    -fx-background-radius: 8;
+    -fx-font-size: 16px;
+    -fx-padding: 6 18 6 18;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #dee2e6, 2, 0.1, 0, 1);
+    -fx-background-color: #e7f5ff;
+    -fx-text-fill: #228be6;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-transition: all 0.2s;
+}
 .button:hover {
-    -fx-background-color: #228be6;
-    -fx-text-fill: #fff;
-    -fx-border-color: #228be6;
+    -fx-background-color: #d0ebff;
+    -fx-effect: dropshadow(gaussian, #a5d8ff, 8, 0.2, 0, 2);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+}
+
+
+.btn-fav {
+    -fx-background-color: #ffe5ec !important;
+    -fx-text-fill: #d6336c !important;
+}
+.btn-fav:hover {
+    -fx-background-color: #fa5252 !important;
+    -fx-text-fill: #fff !important;
+}
+.btn-edit {
+    -fx-background-color: #fff4e6 !important;
+    -fx-text-fill: #f76707 !important;
+}
+.btn-edit:hover {
+    -fx-background-color: #ffa94d !important;
+    -fx-text-fill: #fff !important;
+}
+.btn-delete {
+    -fx-background-color: #fff9db !important;
+    -fx-text-fill: #fab005 !important;
+}
+.btn-delete:hover {
+    -fx-background-color: #ffd43b !important;
+    -fx-text-fill: #fff !important;
 }

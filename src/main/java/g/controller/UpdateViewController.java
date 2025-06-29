@@ -51,8 +51,11 @@ public class UpdateViewController {
     private Button submitButton;
     @FXML
     private Button uploadButton;
+    @FXML
+    private Button clearImageButton;
     private final List<Integer> deletedPairIds = new ArrayList<>();
     private String uploadedImgPath = null;
+    private String originalImgPath = null;
 
     /** ImageView for previewing the uploaded image */
     @FXML
@@ -103,7 +106,7 @@ public class UpdateViewController {
                 nameField.setPromptText("Name");
 
                 TextField quantityField = new TextField(String.valueOf(ingredient.getIngredientAmount()));
-                quantityField.setPromptText("Amount");
+                quantityField.setPromptText("Amount(Only Integer)");
 
                 TextField unitField = new TextField(ingredient.getIngredientUnit());
                 unitField.setPromptText("Unit");
@@ -129,6 +132,23 @@ public class UpdateViewController {
             }
         }
         this.instructionField.setText(instructions);
+        
+        // Save original image path and display preview
+        this.originalImgPath = imgAddr;
+        if (imgAddr != null && !imgAddr.isEmpty() && !"default_image.jpg".equals(imgAddr)) {
+            File imgFile = new File(imgAddr);
+            if (imgFile.exists()) {
+                imgPreview.setImage(new Image(imgFile.toURI().toString()));
+                imgHint.setVisible(false);
+            } else {
+                imgPreview.setImage(null);
+                imgHint.setVisible(true);
+            }
+        } else {
+            imgPreview.setImage(null);
+            imgHint.setVisible(true);
+        }
+        
         updateRemoveButtons();
     }
 
@@ -158,6 +178,18 @@ public class UpdateViewController {
                 alert.showAndWait();
             }
         }
+    }
+
+    /**
+     * Handles the clear image button click event. Clears the uploaded image and preview.
+     */
+    @FXML
+    public void clearImageClicked() {
+        uploadedImgPath = null;
+        imgPreview.setImage(null);
+        imgHint.setVisible(true);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Image cleared successfully!", ButtonType.OK);
+        alert.showAndWait();
     }
 
     @FXML
@@ -239,9 +271,9 @@ public class UpdateViewController {
         String cookTime = cookTimeField.getText();
         String serve = serveField.getText();
         String instruction = instructionField.getText();
-        String imgAddr = uploadedImgPath;
+        String imgAddr = uploadedImgPath != null ? uploadedImgPath : originalImgPath;
 
-        // 校验主表单
+        // Validate main form
         if (title == null || title.trim().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Title cannot be empty").showAndWait();
             return;

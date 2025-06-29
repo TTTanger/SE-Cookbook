@@ -12,7 +12,6 @@ import g.model.Ingredient;
 import g.model.Recipe;
 import g.service.CalculateService;
 import g.service.RecipeService;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,11 +26,15 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.StackPane;
 
 /**
  * Controller for the recipe detail card view. Handles the display and interaction of recipe details.
@@ -44,11 +47,8 @@ public class RecipeDetailCardController implements Initializable {
     private final RecipeService recipeService;
     /** Service for ingredient calculation */
     private final CalculateService calculateService;
-    /** The current recipe detail response */
-    private RecipeDetailResponse recipeDetailResponse;
     /** The current recipe ID */
     private int recipeId;
-
     /** Update view controller */
     @FXML
     private UpdateViewController updateViewController;
@@ -84,13 +84,34 @@ public class RecipeDetailCardController implements Initializable {
     private TableColumn<Ingredient, String> ingredientUnitCol;
     /** Label for empty recipe message */
     @FXML
-    private Label emptyRecipeLabel;
+    private Label emptyLabel;
     /** VBox for detail content */
     @FXML
-    private VBox detailContentBox;
+    private VBox detailContainer;
     /** ImageView for recipe image */
     @FXML
     private ImageView imgView;
+    /** AnchorPane for empty message */
+    @FXML
+    private AnchorPane emptyPane;
+    /** VBox for ingredients */
+    @FXML
+    private VBox ingredientsBox;
+    /** Label for instructions */
+    @FXML
+    private Label instructionsLabel;
+    /** Button for categorize recipe */
+    @FXML
+    private Button recipeCategorizeButton;
+    /** Button for update recipe */
+    @FXML
+    private Button recipeUpdateButton;
+    /** Button for delete recipe */
+    @FXML
+    private Button recipeDeleteButton;
+    /** Button for back */
+    @FXML
+    private Button recipeBackButton;
 
     /**
      * Constructor initializes the recipe and calculation services.
@@ -98,7 +119,7 @@ public class RecipeDetailCardController implements Initializable {
     public RecipeDetailCardController() {
         this.recipeService = new RecipeService();
         this.calculateService = new CalculateService();
-        this.recipeDetailResponse = null;
+
     }
 
     /**
@@ -112,19 +133,6 @@ public class RecipeDetailCardController implements Initializable {
             serveSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1));
         }
         System.out.println("RecipeDetailCardController initialized");
-        if (ingredientNameCol != null) {
-            ingredientNameCol.setCellValueFactory(new PropertyValueFactory<>("ingredientName"));
-        }
-        if (ingredientAmountCol != null) {
-            ingredientAmountCol.setCellValueFactory(new PropertyValueFactory<>("ingredientAmount"));
-        }
-        if (ingredientUnitCol != null) {
-            ingredientUnitCol.setCellValueFactory(new PropertyValueFactory<>("ingredientUnit"));
-        }
-        ingredientsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        ingredientsTable.setEditable(false);
-        ingredientsTable.getColumns().clear();
-        ingredientsTable.getColumns().addAll(ingredientNameCol, ingredientAmountCol, ingredientUnitCol);
     }
 
     /**
@@ -136,27 +144,21 @@ public class RecipeDetailCardController implements Initializable {
         this.recipeId = recipeId;
         RecipeDetailResponse recipeDetail = recipeService.getRecipeById(recipeId);
         Recipe recipe = recipeDetail.getRecipe();
-        List<Ingredient> ingredientsList = recipeDetail.getIngredients();
-        if (ingredientsList != null) {
-            for (Ingredient ing : ingredientsList) {
-                ing.setRecipeId(recipe.getRecipeId());
-            }
-        }
         this.title.setText(recipe.getTitle());
         this.prepTime.setText(String.valueOf(recipe.getPrepTime()));
         this.cookTime.setText(String.valueOf(recipe.getCookTime()));
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, recipe.getServe());
         serveSpinner.setValueFactory(valueFactory);
         serveSpinner.setEditable(true);
-        int initialServings = serveSpinner.getValue();
-        System.out.println("Initial servings: " + initialServings);
-        updateIngredientsDisplay(recipeId, initialServings);
+        // 监听serving变化
         serveSpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
-            System.out.println("Servings changed from " + oldValue + " to " + newValue);
-            updateIngredientsDisplay(recipeId, newValue);
+            updateIngredientsBox(recipeId, newValue);
         });
-        this.instructions.setText(recipe.getInstruction());
-        // Display image
+        // 初始加载
+        updateIngredientsBox(recipeId, serveSpinner.getValue());
+        // Instructions Label
+        instructionsLabel.setText(recipe.getInstruction());
+        // 图片
         if (recipe.getImgAddr() != null && !recipe.getImgAddr().isEmpty()) {
             try {
                 Image img;
@@ -172,15 +174,7 @@ public class RecipeDetailCardController implements Initializable {
         } else {
             imgView.setImage(null);
         }
-        // Show detail content, hide empty message
-        if (emptyRecipeLabel != null) {
-            emptyRecipeLabel.setVisible(false);
-            emptyRecipeLabel.setManaged(false);
-        }
-        if (detailContentBox != null) {
-            detailContentBox.setVisible(true);
-            detailContentBox.setManaged(true);
-        }
+        showRecipeDetail();
     }
 
     /**
@@ -290,34 +284,91 @@ public class RecipeDetailCardController implements Initializable {
      * @param recipeId The recipe ID
      * @param serve The number of servings
      */
-    private void updateIngredientsDisplay(int recipeId, int serve) {
+    private void updateIngredientsBox(int recipeId, int serve) {
         CalculateResponse scaledIngredients = calculateService.IngredientCalculate(recipeId, serve);
         List<Ingredient> ingredientsList = scaledIngredients.getIngredients();
-        if (ingredientsList != null && !ingredientsList.isEmpty()) {
-            ingredientsTable.setItems(FXCollections.observableArrayList(ingredientsList));
-        } else {
-            ingredientsTable.setItems(FXCollections.observableArrayList());
+        ingredientsBox.getChildren().clear();
+        GridPane grid = new GridPane();
+        grid.setHgap(0);
+        grid.setVgap(0);
+        String[] headers = {"Name", "Amount", "Unit"};
+        int[] minWidths = {160, 60, 80}; // name, amount, unit
+        int[] prefWidths = {200, 80, 100};
+        for (int col = 0; col < 3; col++) {
+            Label header = new Label(headers[col]);
+            header.setWrapText(true);
+            header.setMinWidth(minWidths[col]);
+            header.setPrefWidth(prefWidths[col]);
+            header.setMaxWidth(Double.MAX_VALUE);
+            header.getStyleClass().add("ingredient-header");
+            header.setAlignment(javafx.geometry.Pos.TOP_LEFT);
+            header.setMaxHeight(Double.MAX_VALUE);
+            header.setStyle("-fx-border-color: #dee2e6; -fx-border-width: 0 0 1 0;");
+            GridPane.setHgrow(header, javafx.scene.layout.Priority.ALWAYS);
+            GridPane.setVgrow(header, javafx.scene.layout.Priority.ALWAYS);
+            grid.add(header, col, 0);
+        }
+        if (ingredientsList != null) {
+            for (int row = 0; row < ingredientsList.size(); row++) {
+                Ingredient ing = ingredientsList.get(row);
+                String[] values = {
+                    ing.getIngredientName(),
+                    String.valueOf(ing.getIngredientAmount()),
+                    ing.getIngredientUnit()
+                };
+                for (int col = 0; col < 3; col++) {
+                    Label cell = new Label(values[col]);
+                    cell.setWrapText(true);
+                    cell.setMinWidth(minWidths[col]);
+                    cell.setPrefWidth(prefWidths[col]);
+                    cell.setMaxWidth(Double.MAX_VALUE);
+                    cell.getStyleClass().add("ingredient-row");
+                    if (row % 2 == 1) cell.getStyleClass().add("alt");
+                    cell.setAlignment(javafx.geometry.Pos.TOP_LEFT);
+                    cell.setMaxHeight(Double.MAX_VALUE);
+                    cell.setStyle("-fx-border-color: #dee2e6; -fx-border-width: 0 0 1 0;");
+                    GridPane.setHgrow(cell, javafx.scene.layout.Priority.ALWAYS);
+                    GridPane.setVgrow(cell, javafx.scene.layout.Priority.ALWAYS);
+                    grid.add(cell, col, row + 1);
+                }
+            }
+        }
+        // 让每列自动等宽
+        for (int col = 0; col < 3; col++) {
+            ColumnConstraints cc = new ColumnConstraints();
+            cc.setMinWidth(minWidths[col]);
+            cc.setPrefWidth(prefWidths[col]);
+            cc.setHgrow(javafx.scene.layout.Priority.ALWAYS);
+            grid.getColumnConstraints().add(cc);
+        }
+        ingredientsBox.getChildren().add(grid);
+    }
+
+    /**
+     * Show the empty message pane and hide the detail container.
+     */
+    public void showEmptyMessage() {
+        emptyPane.setVisible(true);
+        emptyPane.setManaged(true);
+        detailContainer.setVisible(false);
+        detailContainer.setManaged(false);
+
+        if (ingredientsBox != null) {
+            ingredientsBox.getChildren().clear();
+        }
+
+        if (instructionsLabel != null) {
+            instructionsLabel.setText("");
         }
     }
 
     /**
-     * Shows the empty message and hides the detail content.
+     * Show the detail container and hide the empty message pane.
      */
-    public void showEmptyMessage() {
-        if (emptyRecipeLabel != null) {
-            emptyRecipeLabel.setVisible(true);
-            emptyRecipeLabel.setManaged(true);
-        }
-        if (detailContentBox != null) {
-            detailContentBox.setVisible(false);
-            detailContentBox.setManaged(false);
-        }
-        this.title.setText("");
-        this.prepTime.setText("");
-        this.cookTime.setText("");
-        this.serveSpinner.getValueFactory().setValue(1);
-        this.ingredientsTable.setItems(FXCollections.observableArrayList());
-        this.instructions.setText("Please Select a Recipe");
-        imgView.setImage(null);
+    public void showRecipeDetail() {
+        emptyPane.setVisible(false);
+        emptyPane.setManaged(false);
+        detailContainer.setVisible(true);
+        detailContainer.setManaged(true);
     }
 }

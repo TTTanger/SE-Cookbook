@@ -74,7 +74,7 @@ public class HomeController implements Initializable {
                 showEmptyPane();
             }
         });
-        searchBarController.setCallback(new SearchBarController.ActionCallback() {
+        searchBarController.setCallback(new SearchBarController.SearchCallback() {
             @Override
             public void onSearch(String query) {
                 listViewController.search(query);
