@@ -14,52 +14,54 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="g.controller.UpdateViewController">
    <children>
-      <HBox spacing="24.0" style="-fx-background-color: #fff; -fx-background-radius: 16; -fx-effect: dropshadow(gaussian, #b0b0b0, 12, 0.2, 0, 2); -fx-padding: 24;" AnchorPane.bottomAnchor="30" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="54.0">
+      <HBox spacing="24.0" styleClass="update-card" AnchorPane.bottomAnchor="30" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="54.0">
          <children>
             <VBox alignment="CENTER" maxWidth="220.0" prefWidth="200.0" spacing="16.0">
                <children>
                   <AnchorPane prefHeight="409.0" prefWidth="200.0">
                      <children>
-                        <StackPane layoutX="21.0" layoutY="83.0" prefHeight="130" prefWidth="158" style="-fx-background-color: #f1f3f5; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, #b0b0b0, 6, 0.1, 0, 1);">
+                        <StackPane layoutX="21.0" layoutY="83.0" prefHeight="130" prefWidth="158" styleClass="image-upload-area">
                            <children>
                               <Label fx:id="imgHint" style="-fx-text-fill: #adb5bd; -fx-font-size: 13px;" text="No image" />
                               <ImageView fx:id="imgPreview" fitHeight="160.0" fitWidth="148.0" preserveRatio="true" style="-fx-background-radius: 12;" />
                            </children>
                         </StackPane>
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="34.0" prefHeight="32.0" prefWidth="174.0" style="-fx-font-size: 14px; -fx-text-fill: #495057;" text="Please upload your image" />
-                        <Button fx:id="uploadButton" layoutX="71.0" layoutY="276.0" mnemonicParsing="false" onAction="#uploadClicked" styleClass="button" text="Upload" />
-                        <Button fx:id="clearImageButton" layoutX="71.0" layoutY="310.0" mnemonicParsing="false" onAction="#clearImageClicked" styleClass="button btn-delete" text="Clear Image" />
+                        <Button fx:id="uploadButton" layoutX="71.0" layoutY="276.0" mnemonicParsing="false" onAction="#uploadClicked" styleClass="button-main" text="Upload" />
+                        <Button fx:id="clearImageButton" layoutX="71.0" layoutY="310.0" mnemonicParsing="false" onAction="#clearImageClicked" styleClass="btn-delete" text="Clear Image" />
                      </children>
                   </AnchorPane>
                </children>
             </VBox>
-            <VBox alignment="TOP_LEFT" fillWidth="true" spacing="10.0">
+            <VBox alignment="TOP_LEFT" fillWidth="true" spacing="16.0">
                <children>
                   <HBox spacing="10.0">
                      <Label style="-fx-font-size: 13px;" text="Name:" />
-                     <TextField fx:id="titleField" style="-fx-background-radius: 8;" HBox.hgrow="ALWAYS" />
+                     <TextField fx:id="titleField" styleClass="text-field" HBox.hgrow="ALWAYS" />
                   </HBox>
                   <HBox spacing="10.0">
                      <Label style="-fx-font-size: 13px;" text="Preptime:" />
-                     <TextField fx:id="prepTimeField" maxWidth="80.0" style="-fx-background-radius: 8;" />
+                     <TextField fx:id="prepTimeField" maxWidth="80.0" styleClass="text-field" />
                      <Label style="-fx-font-size: 13px;" text="mins" />
                      <AnchorPane prefWidth="29.0" />
                      <Label style="-fx-font-size: 13px;" text="Cooktime:" />
-                     <TextField fx:id="cookTimeField" maxWidth="80.0" style="-fx-background-radius: 8;" />
+                     <TextField fx:id="cookTimeField" maxWidth="80.0" styleClass="text-field" />
                      <Label style="-fx-font-size: 13px;" text="mins" />
                      <AnchorPane prefWidth="29.0" />
                      <Label style="-fx-font-size: 13px;" text="Serve:" />
-                     <TextField fx:id="serveField" maxWidth="80.0" style="-fx-background-radius: 8;" />
+                     <TextField fx:id="serveField" maxWidth="80.0" styleClass="text-field" />
                   </HBox>
                   <Label style="-fx-font-size: 13px;" text="Instruction:" />
-                  <TextArea fx:id="instructionField" maxWidth="609.0" minWidth="579.0" prefHeight="149.0" prefWidth="609.0" style="-fx-background-radius: 8;" wrapText="true" />
+                  <TextArea fx:id="instructionField" maxWidth="609.0" minWidth="579.0" prefHeight="149.0" prefWidth="609.0" styleClass="text-area" wrapText="true" />
                   <Label style="-fx-font-size: 13px;" text="Ingredients:" />
-                  <ScrollPane fx:id="ingredientPane" fitToWidth="true" prefHeight="150.0" style="-fx-background-radius: 8;">
+                  <ScrollPane fx:id="ingredientPane" fitToWidth="true" prefHeight="150.0" styleClass="text-field">
                      <content>
                         <VBox fx:id="ingredientContainer" />
                      </content>
                   </ScrollPane>
-                  <Button fx:id="submitButton" mnemonicParsing="false" onAction="#handleUpdateRecipe" prefHeight="28.0" prefWidth="70.0" style="-fx-background-radius: 8; -fx-background-color: #51cf66; -fx-text-fill: white;" text="Done" />
+                  <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                    <Button fx:id="submitButton" mnemonicParsing="false" onAction="#handleUpdateRecipe" prefHeight="38.0" prefWidth="180.0" styleClass="button-primary" text="Done" />
+                  </HBox>
                </children>
             </VBox>
          </children>

@@ -117,3 +117,22 @@
     -fx-padding: 0 0 0 2;
     -fx-font-family: "Arial";
 }
+
+.button-primary {
+    -fx-background-color: linear-gradient(to bottom, #228be6, #1971c2) !important;
+    -fx-text-fill: #fff !important;
+    -fx-font-size: 18px !important;
+    -fx-font-weight: bold !important;
+    -fx-background-radius: 8 !important;
+    -fx-padding: 10 36 10 36 !important;
+    -fx-effect: dropshadow(gaussian, #a5d8ff, 4, 0.2, 0, 1) !important;
+    -fx-cursor: hand !important;
+    -fx-border-width: 0 !important;
+    -fx-transition: all 0.2s !important;
+}
+.button-primary:hover {
+    -fx-background-color: linear-gradient(to bottom, #339af0, #1864ab) !important;
+    -fx-effect: dropshadow(gaussian, #228be6, 8, 0.3, 0, 2) !important;
+    -fx-scale-x: 1.05 !important;
+    -fx-scale-y: 1.05 !important;
+}

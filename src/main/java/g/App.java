@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 /**
  * Main JavaFX application class for the Cookbook application.
@@ -35,13 +36,18 @@ public class App extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
+        System.out.println("Starting JavaFX application...");
+        
         scene = new Scene(loadFXML("main"), WINDOW_WIDTH, WINDOW_HEIGHT);
         scene.getStylesheets().add(getClass().getResource("/g/app.css").toExternalForm());
-        
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/g/cookbook.ico")));
         stage.setScene(scene);
         stage.setMinWidth(MIN_WIDTH); 
-        stage.setMinHeight(MIN_HEIGHT);  
+        stage.setMinHeight(MIN_HEIGHT);
+        stage.setTitle("Cookbook Application");
         stage.show();
+        
+        System.out.println("JavaFX application window should be visible now");
     }
 
     /**

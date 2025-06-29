@@ -21,9 +21,9 @@ public class DBUtil {
     private static final Logger LOGGER = Logger.getLogger(DBUtil.class.getName());
     
     /**
-     * The database file path relative to the application root
+     * The database file path in user's home directory
      */
-    private static final String DB_PATH = "./data/cookbook.db";
+    private static final String DB_FILENAME = "cookbook.db";
     
     /**
      * The JDBC URL for the SQLite database connection
@@ -36,11 +36,13 @@ public class DBUtil {
 
     /**
      * Initializes the database path and ensures the data directory exists.
+     * Uses user's home directory to ensure write permissions.
      */
     private static void initializeDatabasePath() {
         try {
-            // Ensure data directory exists
-            File dataDir = new File("./data");
+            // Use user's home directory for database storage
+            String userHome = System.getProperty("user.home");
+            File dataDir = new File(userHome, ".cookbook");
             if (!dataDir.exists()) {
                 boolean created = dataDir.mkdirs();
                 if (created) {
@@ -49,7 +51,9 @@ public class DBUtil {
                     LOGGER.warning("Failed to create data directory: " + dataDir.getAbsolutePath());
                 }
             }
-            url = "jdbc:sqlite:" + DB_PATH;
+            
+            File dbFile = new File(dataDir, DB_FILENAME);
+            url = "jdbc:sqlite:" + dbFile.getAbsolutePath();
             LOGGER.info("Database URL initialized: " + url);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error initializing database path", e);
