@@ -1,6 +1,7 @@
 package g;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import g.utils.DBUtil;
 import javafx.application.Application;
@@ -79,7 +80,8 @@ public class App extends Application {
      * @param args command line arguments
      */
     public static void main(String[] args) {
+        Locale.setDefault(Locale.ENGLISH);
         DBUtil.initializeDatabase();
-        launch();
+        launch(args);
     }
 }

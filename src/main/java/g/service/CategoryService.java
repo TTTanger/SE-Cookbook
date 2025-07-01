@@ -124,7 +124,7 @@ public class CategoryService {
 
     /**
      * Deletes a category and removes all its recipe associations.
-     * 
+     * Returns false and logs the error message if deletion fails, so the UI can display detailed info.
      * @param categoryId the ID of the category to delete
      * @return true if the category was deleted successfully, false otherwise
      */
@@ -138,7 +138,14 @@ public class CategoryService {
             }
 
             // Then delete the category
-            boolean deleteSuccess = categoryDAO.deleteCategory(categoryId);
+            boolean deleteSuccess = false;
+            try {
+                deleteSuccess = categoryDAO.deleteCategory(categoryId);
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Error deleting category " + categoryId + ": " + e.getMessage(), e);
+                // Optionally: store error message for UI
+                return false;
+            }
             if (deleteSuccess) {
                 LOGGER.info("Category " + categoryId + " deleted successfully");
             } else {

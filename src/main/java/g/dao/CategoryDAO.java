@@ -57,21 +57,25 @@ public class CategoryDAO {
 
     /**
      * Deletes a category from the database.
-     * 
+     * Throws SQLException if deletion fails, so the service layer can provide detailed error messages.
      * @param categoryId the ID of the category to delete
      * @return true if the category was deleted successfully, false otherwise
+     * @throws SQLException if a database access error occurs
      */
-    public boolean deleteCategory(int categoryId) {
+    public boolean deleteCategory(int categoryId) throws SQLException {
         try (Connection conn = DBUtil.getConnection(); 
              PreparedStatement stmt = conn.prepareStatement(DELETE_CATEGORY_SQL)) {
-            
             stmt.setInt(1, categoryId);
             int rowsAffected = stmt.executeUpdate();
-            LOGGER.info("Category deleted: " + categoryId + ", rows affected: " + rowsAffected);
-            return rowsAffected > 0;
+            if (rowsAffected > 0) {
+                LOGGER.info("Category deleted: " + categoryId + ", rows affected: " + rowsAffected);
+                return true;
+            } else {
+                throw new SQLException("No category deleted. The category may not exist.");
+            }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error deleting category: " + categoryId, e);
-            return false;
+            throw e;
         }
     }
 

@@ -113,11 +113,15 @@ public class CreateViewController {
 
         // Validate main form
         if (title == null || title.trim().isEmpty()) {
-            new Alert(Alert.AlertType.ERROR, "Title cannot be empty").showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Title cannot be empty");
+            alert.setTitle("Error");
+            alert.showAndWait();
             return;
         }
         if (instruction == null || instruction.trim().isEmpty()) {
-            new Alert(Alert.AlertType.ERROR, "Instruction cannot be empty").showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Instruction cannot be empty");
+            alert.setTitle("Error");
+            alert.showAndWait();
             return;
         }
         int serveInt, prepInt, cookInt;
@@ -125,21 +129,27 @@ public class CreateViewController {
             serveInt = Integer.parseInt(serve);
             if (serveInt <= 0) throw new Exception();
         } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Servings must be a positive integer").showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Servings must be a positive integer");
+            alert.setTitle("Error");
+            alert.showAndWait();
             return;
         }
         try {
             prepInt = Integer.parseInt(prepTime);
             if (prepInt < 0) throw new Exception();
         } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Prep Time must be a non-negative integer").showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Prep Time must be a non-negative integer");
+            alert.setTitle("Error");
+            alert.showAndWait();
             return;
         }
         try {
             cookInt = Integer.parseInt(cookTime);
             if (cookInt < 0) throw new Exception();
         } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Cook Time must be a non-negative integer").showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Cook Time must be a non-negative integer");
+            alert.setTitle("Error");
+            alert.showAndWait();
             return;
         }
 
@@ -163,19 +173,19 @@ public class CreateViewController {
                     }
                 }
                 if (nameField == null || nameField.getText().trim().isEmpty()) {
-                    new Alert(Alert.AlertType.ERROR, "Ingredient Name cannot be empty").showAndWait();
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Ingredient Name cannot be empty");
+                    alert.setTitle("Error");
+                    alert.showAndWait();
                     return;
                 }
-                // if (unitField == null || unitField.getText().trim().isEmpty()) {
-                //     new Alert(Alert.AlertType.ERROR, "Ingredient Unit cannot be empty").showAndWait();
-                //     return;
-                // }
                 int quantity;
                 try {
                     quantity = Integer.parseInt(quantityField.getText());
                     if (quantity <= 0) throw new Exception();
                 } catch (Exception e) {
-                    new Alert(Alert.AlertType.ERROR, "Ingredient Amount must be a positive integer").showAndWait();
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Ingredient Amount must be a positive integer");
+                    alert.setTitle("Error");
+                    alert.showAndWait();
                     return;
                 }
                 Ingredient ing = new Ingredient();
@@ -233,10 +243,12 @@ public class CreateViewController {
                 imgPreview.setImage(new Image(dest.toURI().toString()));
                 imgHint.setVisible(false);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Image uploaded successfully!", ButtonType.OK);
+                alert.setTitle("Info");
                 alert.showAndWait();
             } catch (IOException e) {
                 e.printStackTrace();
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Image upload failed!", ButtonType.OK);
+                alert.setTitle("Error");
                 alert.showAndWait();
             }
         }
@@ -251,6 +263,7 @@ public class CreateViewController {
         imgPreview.setImage(null);
         imgHint.setVisible(true);
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Image cleared successfully!", ButtonType.OK);
+        alert.setTitle("Info");
         alert.showAndWait();
     }
 

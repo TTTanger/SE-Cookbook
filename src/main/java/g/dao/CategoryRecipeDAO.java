@@ -51,15 +51,19 @@ public class CategoryRecipeDAO {
         }
     }
 
+    /**
+     * Removes all recipe associations from the given category.
+     * Always returns true if the SQL executes successfully, even if no recipes are associated.
+     * This allows deleting a category even if it has no recipes.
+     * @param categoryId the ID of the category
+     * @return true if SQL executes successfully, false otherwise
+     */
     public boolean removeAllRecipesFromCategory(int categoryId) {
         String sql = "DELETE FROM category_recipe WHERE category_id = ?";
         try (Connection conn = DBUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setInt(1, categoryId);
-
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
-
+            stmt.executeUpdate(); // No need to check rowsAffected
+            return true; // Always return true if SQL executes successfully
         } catch (Exception e) {
             e.printStackTrace();
             return false;

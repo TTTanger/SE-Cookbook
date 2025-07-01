@@ -208,7 +208,13 @@ public class AddRecipeToCategoryController implements Initializable {
      */
     private void showAlert(String title, String content) {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle(title);
+        if ("Error".equalsIgnoreCase(title) || "Failure".equalsIgnoreCase(title)) {
+            alert.setTitle("Error");
+        } else if ("Success".equalsIgnoreCase(title)) {
+            alert.setTitle("Success");
+        } else {
+            alert.setTitle("Info");
+        }
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();

@@ -81,5 +81,24 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>data</directory>
+                <targetPath>data</targetPath>
+                <includes>
+                    <include>cookbook.db</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>imgs</directory>
+                <targetPath>imgs</targetPath>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>

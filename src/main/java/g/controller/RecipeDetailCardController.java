@@ -157,14 +157,27 @@ public class RecipeDetailCardController implements Initializable {
         updateIngredientsBox(recipeId, serveSpinner.getValue());
         // Instructions Label
         instructionsLabel.setText(recipe.getInstruction());
-        // 图片
+        // Image
         if (recipe.getImgAddr() != null && !recipe.getImgAddr().isEmpty()) {
             try {
                 Image img;
                 if (recipe.getImgAddr().startsWith("http")) {
+                    // Load image from URL
                     img = new Image(recipe.getImgAddr(), true);
                 } else {
-                    img = new Image(new File(recipe.getImgAddr()).toURI().toString(), true);
+                    // Try to load from jar resource first
+                    String imgPath = recipe.getImgAddr();
+                    if (!imgPath.startsWith("/")) {
+                        imgPath = "/" + imgPath;
+                    }
+                    // Try as resource
+                    java.net.URL resourceUrl = getClass().getResource(imgPath);
+                    if (resourceUrl != null) {
+                        img = new Image(resourceUrl.toExternalForm(), true);
+                    } else {
+                        // Fallback: try as file system path
+                        img = new Image(new File(recipe.getImgAddr()).toURI().toString(), true);
+                    }
                 }
                 imgView.setImage(img);
             } catch (Exception e) {
@@ -184,7 +197,7 @@ public class RecipeDetailCardController implements Initializable {
     public void onRecipeDeleteClicked(ActionEvent event) {
         // Show confirmation dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Delete");
+        alert.setTitle("Confirm");
         alert.setHeaderText(null);
         alert.setContentText("Are you sure you want to delete this recipe?");
         alert.showAndWait().ifPresent(result -> {

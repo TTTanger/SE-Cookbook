@@ -136,13 +136,25 @@ public class UpdateViewController {
         // Save original image path and display preview
         this.originalImgPath = imgAddr;
         if (imgAddr != null && !imgAddr.isEmpty() && !"default_image.jpg".equals(imgAddr)) {
-            File imgFile = new File(imgAddr);
-            if (imgFile.exists()) {
-                imgPreview.setImage(new Image(imgFile.toURI().toString()));
+            // Try to load from jar resource first
+            String imgPath = imgAddr;
+            if (!imgPath.startsWith("/")) {
+                imgPath = "/" + imgPath;
+            }
+            java.net.URL resourceUrl = getClass().getResource(imgPath);
+            if (resourceUrl != null) {
+                imgPreview.setImage(new Image(resourceUrl.toExternalForm()));
                 imgHint.setVisible(false);
             } else {
-                imgPreview.setImage(null);
-                imgHint.setVisible(true);
+                // Fallback: try as file system path
+                File imgFile = new File(imgAddr);
+                if (imgFile.exists()) {
+                    imgPreview.setImage(new Image(imgFile.toURI().toString()));
+                    imgHint.setVisible(false);
+                } else {
+                    imgPreview.setImage(null);
+                    imgHint.setVisible(true);
+                }
             }
         } else {
             imgPreview.setImage(null);
@@ -171,10 +183,12 @@ public class UpdateViewController {
                 imgPreview.setImage(new Image(dest.toURI().toString()));
                 imgHint.setVisible(false);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Image uploaded successfully!", ButtonType.OK);
+                alert.setTitle("Info");
                 alert.showAndWait();
             } catch (IOException e) {
                 e.printStackTrace();
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Image upload failed!", ButtonType.OK);
+                alert.setTitle("Error");
                 alert.showAndWait();
             }
         }
@@ -189,6 +203,7 @@ public class UpdateViewController {
         imgPreview.setImage(null);
         imgHint.setVisible(true);
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Image cleared successfully!", ButtonType.OK);
+        alert.setTitle("Info");
         alert.showAndWait();
     }
 
@@ -258,7 +273,7 @@ public class UpdateViewController {
 
     public void handleUpdateRecipe() {
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmAlert.setTitle("Confirm Update");
+        confirmAlert.setTitle("Confirm");
         confirmAlert.setHeaderText(null);
         confirmAlert.setContentText("Are you sure you want to save the changes to the recipe?");
         var result = confirmAlert.showAndWait();
@@ -275,11 +290,15 @@ public class UpdateViewController {
 
         // Validate main form
         if (title == null || title.trim().isEmpty()) {
-            new Alert(Alert.AlertType.ERROR, "Title cannot be empty").showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Title cannot be empty");
+            alert.setTitle("Error");
+            alert.showAndWait();
             return;
         }
         if (instruction == null || instruction.trim().isEmpty()) {
-            new Alert(Alert.AlertType.ERROR, "Instruction cannot be empty").showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Instruction cannot be empty");
+            alert.setTitle("Error");
+            alert.showAndWait();
             return;
         }
         int serveInt, prepInt, cookInt;
@@ -287,21 +306,27 @@ public class UpdateViewController {
             serveInt = Integer.parseInt(serve);
             if (serveInt <= 0) throw new Exception();
         } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Servings must be a positive integer").showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Servings must be a positive integer");
+            alert.setTitle("Error");
+            alert.showAndWait();
             return;
         }
         try {
             prepInt = Integer.parseInt(prepTime);
             if (prepInt < 0) throw new Exception();
         } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Prep Time must be a non-negative integer").showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Prep Time must be a non-negative integer");
+            alert.setTitle("Error");
+            alert.showAndWait();
             return;
         }
         try {
             cookInt = Integer.parseInt(cookTime);
             if (cookInt < 0) throw new Exception();
         } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Cook Time must be a non-negative integer").showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Cook Time must be a non-negative integer");
+            alert.setTitle("Error");
+            alert.showAndWait();
             return;
         }
         for (var node : ingredientContainer.getChildren()) {
@@ -321,19 +346,19 @@ public class UpdateViewController {
                     }
                 }
                 if (nameField == null || nameField.getText().trim().isEmpty()) {
-                    new Alert(Alert.AlertType.ERROR, "Ingredient Name cannot be empty").showAndWait();
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Ingredient Name cannot be empty");
+                    alert.setTitle("Error");
+                    alert.showAndWait();
                     return;
                 }
-                //if (unitField == null || unitField.getText().trim().isEmpty()) {
-                //    new Alert(Alert.AlertType.ERROR, "Ingredient Unit cannot be empty").showAndWait();
-                //    return;
-                //}
                 int quantity;
                 try {
                     quantity = Integer.parseInt(quantityField.getText());
                     if (quantity <= 0) throw new Exception();
                 } catch (Exception e) {
-                    new Alert(Alert.AlertType.ERROR, "Ingredient Amount must be a positive integer").showAndWait();
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Ingredient Amount must be a positive integer");
+                    alert.setTitle("Error");
+                    alert.showAndWait();
                     return;
                 }
             }
@@ -399,6 +424,7 @@ public class UpdateViewController {
         boolean success = recipeService.updateRecipe(request);
         if (success) {
             Alert info = new Alert(Alert.AlertType.INFORMATION, "Recipe updated successfully!", ButtonType.OK);
+            info.setTitle("Info");
             info.showAndWait();
 
             if (updateCallback != null) {

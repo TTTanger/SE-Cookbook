@@ -35,8 +35,10 @@ public class DBUtil {
     }
 
     /**
-     * Initializes the database path and ensures the data directory exists.
-     * Uses user's home directory to ensure write permissions.
+     * Initializes the database path and copies the initial database from the jar resource
+     * (resources/data/cookbook.db) to the user's home directory ONLY IF the database does not exist.
+     * If the resource is not found, falls back to the file system data directory.
+     * This ensures the user gets the initial data only on first install/startup.
      */
     private static void initializeDatabasePath() {
         try {
@@ -51,8 +53,39 @@ public class DBUtil {
                     LOGGER.warning("Failed to create data directory: " + dataDir.getAbsolutePath());
                 }
             }
-            
             File dbFile = new File(dataDir, DB_FILENAME);
+            if (!dbFile.exists()) {
+                boolean copied = false;
+                // Try to copy from jar resource first
+                try (java.io.InputStream in = DBUtil.class.getResourceAsStream("/data/cookbook.db")) {
+                    if (in != null) {
+                        java.nio.file.Files.copy(in, dbFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                        LOGGER.info("Copied initial database from jar resource: /data/cookbook.db");
+                        copied = true;
+                    } else {
+                        LOGGER.warning("Initial database not found in jar resource: /data/cookbook.db");
+                    }
+                } catch (Exception ex) {
+                    LOGGER.log(Level.SEVERE, "Failed to copy initial database from jar resource", ex);
+                }
+                // Fallback: try to copy from file system data directory
+                if (!copied) {
+                    try {
+                        File initialDb = new File(System.getProperty("user.dir") + File.separator + "data" + File.separator + DB_FILENAME);
+                        LOGGER.info("Looking for initial DB at: " + initialDb.getAbsolutePath());
+                        if (initialDb.exists()) {
+                            java.nio.file.Files.copy(initialDb.toPath(), dbFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                            LOGGER.info("Copied initial database from data directory: " + initialDb.getAbsolutePath());
+                        } else {
+                            LOGGER.warning("Initial database not found in data directory: " + initialDb.getAbsolutePath());
+                        }
+                    } catch (Exception copyEx) {
+                        LOGGER.log(Level.SEVERE, "Failed to copy initial database from data directory", copyEx);
+                    }
+                }
+            } else {
+                LOGGER.info("User database already exists, not overwriting: " + dbFile.getAbsolutePath());
+            }
             url = "jdbc:sqlite:" + dbFile.getAbsolutePath();
             LOGGER.info("Database URL initialized: " + url);
         } catch (Exception e) {

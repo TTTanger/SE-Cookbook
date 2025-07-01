@@ -1,16 +1,19 @@
 @echo off
-echo Building fat jar...
+REM Build fat jar
 call mvn clean package
 
-echo Creating custom runtime with JavaFX and all dependencies...
+REM Remove old custom JavaFX runtime if exists
+if exist output\myruntime rmdir /s /q output\myruntime
+
+REM Create custom JavaFX runtime
 jlink ^
   --module-path "%JAVA_HOME%/jmods;output/openjfx-21.0.7_windows-x64_bin-jmods/javafx-jmods-21.0.7" ^
   --add-modules java.base,java.desktop,java.logging,java.sql,java.xml,java.naming,java.management,java.security.jgss,java.instrument,java.compiler,java.scripting,java.rmi,java.transaction.xa,java.sql.rowset,java.prefs,java.datatransfer,java.xml.crypto,java.security.sasl,javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.media,javafx.swing,javafx.web ^
   --output output/myruntime
 
-echo Creating Windows exe...
+REM Package as Windows exe, ensure data directory is included
 jpackage ^
-  --type exe ^
+  --type msi ^
   --input target ^
   --name Cookbook ^
   --main-jar cookbook-1.0-SNAPSHOT.jar ^
@@ -24,4 +27,4 @@ jpackage ^
   --win-shortcut
 
 echo Done!
-pause 
+pause

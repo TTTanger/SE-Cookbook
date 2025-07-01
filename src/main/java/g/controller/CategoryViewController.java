@@ -91,6 +91,26 @@ public class CategoryViewController implements Initializable {
         setupRecipeSelectionCallback();
         setupSearchCallback();
         setupInitialState();
+        // Set callback for recipe detail actions to refresh center and right pane after update
+        recipeDetailCardController.setCallback(new RecipeDetailCardController.DetailCallback() {
+            @Override
+            public void onRecipeDeleted(int recipeId) {
+                // Refresh the center list and clear the right detail when a recipe is deleted
+                listViewController.loadRecipesByCategory(currentCategoryId);
+                recipeDetailCardController.showEmptyMessage();
+            }
+            @Override
+            public void onRecipeUpdated(int recipeId) {
+                // Refresh the center list and right detail when a recipe is updated
+                listViewController.loadRecipesByCategory(currentCategoryId);
+                recipeDetailCardController.loadRecipeData(recipeId);
+            }
+            @Override
+            public void onBack() {
+                // Clear the right detail when back is pressed
+                recipeDetailCardController.showEmptyMessage();
+            }
+        });
     }
 
     /**
@@ -295,6 +315,13 @@ public class CategoryViewController implements Initializable {
      */
     private void showAlert(Alert.AlertType alertType, String message) {
         Alert alert = new Alert(alertType, message);
+        switch (alertType) {
+            case ERROR -> alert.setTitle("Error");
+            case WARNING -> alert.setTitle("Warning");
+            case CONFIRMATION -> alert.setTitle("Confirm");
+            default -> alert.setTitle("Info");
+        }
+        alert.setHeaderText(null);
         alert.showAndWait();
     }
 }
