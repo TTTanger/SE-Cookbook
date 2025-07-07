@@ -190,31 +190,18 @@ public class RecipeDetailCardController implements Initializable {
         instructionsLabel.setText(recipe.getInstruction());
         if (recipe.getImgAddr() != null && !recipe.getImgAddr().isEmpty()) {
             try {
-                Image img;
-                if (recipe.getImgAddr().startsWith("http")) {
-                    img = new Image(recipe.getImgAddr(), true);
-                } else if ("Upload_Img.png".equals(recipe.getImgAddr())) {
-                    java.net.URL resourceUrl = getClass().getResource("/g/Upload_Img.png");
-                    if (resourceUrl != null) {
-                        img = new Image(resourceUrl.toExternalForm(), true);
-                    } else {
-                        img = null;
-                    }
+                Image img = null;
+                String imgFileName = recipe.getImgAddr();
+                if (imgFileName.startsWith("imgs/")) {
+                    imgFileName = imgFileName.substring(5);
+                }
+                File imgFile = new File(USER_IMG_DIR + File.separator + imgFileName);
+                if (imgFile.exists()) {
+                    img = new Image(imgFile.toURI().toString(), true);
                 } else {
-                    String imgFileName = recipe.getImgAddr();
-                    if (imgFileName.startsWith("imgs/")) {
-                        imgFileName = imgFileName.substring(5);
-                    }
-                    File imgFile = new File(USER_IMG_DIR + File.separator + imgFileName);
-                    if (imgFile.exists()) {
-                        img = new Image(imgFile.toURI().toString(), true);
-                    } else {
-                        File oldImgFile = new File("imgs" + File.separator + imgFileName);
-                        if (oldImgFile.exists()) {
-                            img = new Image(oldImgFile.toURI().toString(), true);
-                        } else {
-                            img = null;
-                        }
+                    File oldImgFile = new File("imgs" + File.separator + imgFileName);
+                    if (oldImgFile.exists()) {
+                        img = new Image(oldImgFile.toURI().toString(), true);
                     }
                 }
                 imgView.setImage(img);

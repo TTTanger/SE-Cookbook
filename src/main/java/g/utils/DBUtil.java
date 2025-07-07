@@ -42,7 +42,6 @@ public class DBUtil {
      */
     private static void initializeDatabasePath() {
         try {
-            // Use user's home directory for database storage
             String userHome = System.getProperty("user.home");
             File dataDir = new File(userHome, ".cookbook");
             if (!dataDir.exists()) {
@@ -56,7 +55,6 @@ public class DBUtil {
             File dbFile = new File(dataDir, DB_FILENAME);
             if (!dbFile.exists()) {
                 boolean copied = false;
-                // Try to copy from jar resource first
                 try (java.io.InputStream in = DBUtil.class.getResourceAsStream("/data/cookbook.db")) {
                     if (in != null) {
                         java.nio.file.Files.copy(in, dbFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
@@ -68,7 +66,6 @@ public class DBUtil {
                 } catch (Exception ex) {
                     LOGGER.log(Level.SEVERE, "Failed to copy initial database from jar resource", ex);
                 }
-                // Fallback: try to copy from file system data directory
                 if (!copied) {
                     try {
                         File initialDb = new File(System.getProperty("user.dir") + File.separator + "data" + File.separator + DB_FILENAME);
@@ -136,16 +133,16 @@ public class DBUtil {
             // Create ingredient table
             stmt.execute("CREATE TABLE IF NOT EXISTS ingredient (" +
                         "pair_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "recipe_id INTEGER, " +
-                        "ingredient_name TEXT, " +
+                        "recipe_id INTEGER NOT NULL, " +
+                        "ingredient_name TEXT NOT NULL, " +
                         "ingredient_amount INTEGER, " +
                         "unit TEXT, " +
                         "FOREIGN KEY(recipe_id) REFERENCES recipe(recipe_id))");
             
             // Create category_recipe table
             stmt.execute("CREATE TABLE IF NOT EXISTS category_recipe (" +
-                        "category_id INTEGER, " +
-                        "recipe_id INTEGER, " +
+                        "category_id INTEGER NOT NULL, " +
+                        "recipe_id INTEGER NOT NULL, " +
                         "PRIMARY KEY(category_id, recipe_id), " +
                         "FOREIGN KEY(category_id) REFERENCES category(category_id), " +
                         "FOREIGN KEY(recipe_id) REFERENCES recipe(recipe_id))");
@@ -218,10 +215,8 @@ public class DBUtil {
             for (String imageName : initialImages) {
                 File destFile = new File(userDir, imageName);
                 if (!destFile.exists()) {
-                    // Try multiple resource paths
                     java.net.URL imageUrl = null;
                     
-                    // Try different resource paths
                     String[] resourcePaths = {
                         "imgs/" + imageName,
                         "/imgs/" + imageName,
