@@ -1,7 +1,6 @@
 package g.dto;
 
 import java.util.List;
-import java.util.Objects;
 
 import g.model.Ingredient;
 import g.model.Recipe;
@@ -91,21 +90,6 @@ public class RecipeDetailRequest {
      */
     public void setDeleteIds(List<Integer> deleteIds) {
         this.deleteIds = deleteIds;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        RecipeDetailRequest that = (RecipeDetailRequest) obj;
-        return Objects.equals(recipe, that.recipe) &&
-               Objects.equals(ingredients, that.ingredients) &&
-               Objects.equals(deleteIds, that.deleteIds);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(recipe, ingredients, deleteIds);
     }
 
     @Override

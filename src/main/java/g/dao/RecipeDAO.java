@@ -14,9 +14,9 @@ import g.model.Recipe;
 import g.utils.DBUtil;
 
 /**
- * Data Access Object for Recipe entities.
- * This class provides database operations for managing recipes including
- * CRUD operations, search functionality, and recipe retrieval.
+ * Data Access Object for Recipe tables.
+ * This class provides database operations for managing recipes,
+ * including CRUD operations, search functionality, and recipe retrieval.
  * 
  * @author Xinyuan Jiang
  * @since 2025-6-15
@@ -280,82 +280,4 @@ public class RecipeDAO {
         }
     }
    
-    // public boolean existsByTitle(String title) {
-    //     String sql = "SELECT COUNT(*) FROM recipe WHERE title = ?";
-    //     try (Connection conn = DBUtil.getConnection();
-    //         PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-    //         stmt.setString(1, title);
-
-    //         try (ResultSet rs = stmt.executeQuery()) {
-    //             if (rs.next()) {
-    //                 int count = rs.getInt(1);
-    //                 System.out.println("Recipe title '" + title + "' count: " + count);
-    //                 return count > 0;
-    //             }
-    //         }
-
-    //         return false;
-
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         return false;
-    //     }
-    // }
-
-    public static void main(String[] args) {
-
-        // RecipeDAO recipeDAO = new RecipeDAO();
-
-        // recipeDAO.createRecipe("tr2", 6, 30, "Instructions for test2 recipe", "img/test_recipe_2.jpg",2);
-
-        // recipeDAO.deleteRecipe(3);
-
-        // recipeDAO.updateRecipe(4, "Updated Recipe", 25, 55, "Updated instructions", "img/updated_recipe.jpg",90);
-
-        // int recipeId =4;
-        // Recipe recipe = recipeDAO.getRecipeById(recipeId);
-        // if (recipe != null && recipe.getTitle() != null) {
-        //     System.out.println("Found recipe: " + recipe.getTitle());
-        //     System.out.println("Prep time: " + recipe.getPrepTime());
-        //     System.out.println("Cook time: " + recipe.getCookTime());
-        //     System.out.println("Instruction: " + recipe.getInstruction());
-        //     System.out.println("ImgAddr: " + recipe.getImgAddr());
-        //     System.out.println("Serve: " + recipe.getServe());
-        // } else {
-        //     System.out.println("No recipe found for ID: " + recipeId);
-        // }
-
-        // String keyword = "Test";
-        // List<Recipe> recipes = recipeDAO.getRecipesByTitle(keyword);
-        // if (recipes.isEmpty()) {
-        //     System.out.println("No recipes found.");
-        // } else {
-        //     for (Recipe recipe : recipes) {
-        //         System.out.println("Found recipe: " + recipe.getTitle());
-        //         System.out.println("Prep time: " + recipe.getPrepTime());
-        //         System.out.println("Cook time: " + recipe.getCookTime());
-        //         System.out.println("Instruction: " + recipe.getInstruction());
-        //         System.out.println("ImgAddr: " + recipe.getImgAddr());
-        //         System.out.println("Serve: " + recipe.getServe());
-        //     }
-        // }
-
-        // List<Recipe> recipes = recipeDAO.getAllRecipes();
-        // if (recipes != null && !recipes.isEmpty()) {
-        //     for (Recipe recipe : recipes) {
-        //         System.out.println("Recipe ID: " + recipe.getRecipeId());
-        //         System.out.println("Title: " + recipe.getTitle());
-        //         System.out.println("Prep Time: " + recipe.getPrepTime());
-        //         System.out.println("Cook Time: " + recipe.getCookTime());
-        //         System.out.println("Instruction: " + recipe.getInstruction());
-        //         System.out.println("ImgAddr: " + recipe.getImgAddr());
-        //         System.out.println("Serve: " + recipe.getServe());
-        //         System.out.println("-----------------------------");
-        //     }
-        // } else {
-        //     System.out.println("No recipes found.");
-        // }
-
-    }
 }

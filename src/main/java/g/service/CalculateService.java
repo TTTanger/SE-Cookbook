@@ -8,16 +8,34 @@ import g.dao.RecipeDAO;
 import g.dto.CalculateResponse;
 import g.model.Ingredient;
 
+/**
+ * Service class for calculating ingredient amounts based on recipe servings.
+ * This class provides methods to scale ingredient amounts according to the
+ * desired number of servings for a recipe.
+ * 
+ * @author Xinyuan Jiang
+ * @since 2025-6-15
+ */
 public class CalculateService {
 
     private final IngredientDAO ingredientDAO;
     private final RecipeDAO recipeDAO;
         
+    /**
+     * Default constructor for CalculateService.
+     */
     public CalculateService() {
         this.ingredientDAO = new IngredientDAO();
         this.recipeDAO = new RecipeDAO();
     }
 
+    /**
+     * Calculates the scaled ingredient amounts for a recipe based on the desired number of servings.
+     * 
+     * @param recipeId the ID of the recipe to calculate ingredients for
+     * @param serve the desired number of servings
+     * @return a CalculateResponse containing the scaled ingredients
+     */
     public CalculateResponse IngredientCalculate(int recipeId, int serve) {
        
         CalculateResponse response = new CalculateResponse();

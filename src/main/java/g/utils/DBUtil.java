@@ -42,7 +42,7 @@ public class DBUtil {
      */
     private static void initializeDatabasePath() {
         try {
-            // Use user's home directory for database storage
+            
             String userHome = System.getProperty("user.home");
             File dataDir = new File(userHome, ".cookbook");
             if (!dataDir.exists()) {
@@ -56,7 +56,7 @@ public class DBUtil {
             File dbFile = new File(dataDir, DB_FILENAME);
             if (!dbFile.exists()) {
                 boolean copied = false;
-                // Try to copy from jar resource first
+                
                 try (java.io.InputStream in = DBUtil.class.getResourceAsStream("/data/cookbook.db")) {
                     if (in != null) {
                         java.nio.file.Files.copy(in, dbFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
@@ -68,7 +68,7 @@ public class DBUtil {
                 } catch (Exception ex) {
                     LOGGER.log(Level.SEVERE, "Failed to copy initial database from jar resource", ex);
                 }
-                // Fallback: try to copy from file system data directory
+                
                 if (!copied) {
                     try {
                         File initialDb = new File(System.getProperty("user.dir") + File.separator + "data" + File.separator + DB_FILENAME);

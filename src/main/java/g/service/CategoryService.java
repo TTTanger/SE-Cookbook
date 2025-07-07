@@ -30,24 +30,13 @@ public class CategoryService {
     private final CategoryDAO categoryDAO;
 
     /**
-     * Constructs a new CategoryService with initialized DAOs.
+     * Default constructor for CategoryService.
      */
     public CategoryService() {
         categoryDAO = new CategoryDAO();
         recipeDAO = new RecipeDAO();
         categoryRecipeDAO = new CategoryRecipeDAO();
     }
-
-    // public boolean addRecipeToCategory(List<Integer> categoryIds, int recipeId) {
-    //     boolean ifAdd = categoryRecipeDAO.addToCategory(categoryIds, recipeId);
-    //     if (ifAdd) {
-    //         System.out.println("Recipe added to all categories.");
-    //         return true;
-    //     } else {
-    //         System.out.println("Failed to add recipe to categories.");
-    //         return false;
-    //     }
-    // }
 
     /**
      * Updates the categories associated with a recipe.
@@ -60,17 +49,15 @@ public class CategoryService {
      */
     public boolean updateRecipeToCategory(List<Integer> categoryIds, int recipeId) {
         try {
-            // Get current category associations
+            
             List<Integer> currentCategoryIds = categoryRecipeDAO.getCategoryIdsByRecipeId(recipeId);
 
-            // If no categories to update, return success
             if ((currentCategoryIds == null || currentCategoryIds.isEmpty()) && 
                 (categoryIds == null || categoryIds.isEmpty())) {
                 LOGGER.info("No categories to update for recipe " + recipeId);
                 return true;
             }
 
-            // Clear existing category associations if any exist
             if (currentCategoryIds != null && !currentCategoryIds.isEmpty()) {
                 boolean clearSuccess = categoryRecipeDAO.clearCategoriesForRecipe(recipeId);
                 if (!clearSuccess) {
@@ -79,7 +66,6 @@ public class CategoryService {
                 }
             }
 
-            // Add new category associations if any are provided
             if (categoryIds != null && !categoryIds.isEmpty()) {
                 boolean addSuccess = categoryRecipeDAO.addToCategory(categoryIds, recipeId);
                 if (!addSuccess) {
@@ -130,20 +116,18 @@ public class CategoryService {
      */
     public boolean deleteCategory(int categoryId) {
         try {
-            // First clear all recipe associations for this category
+            
             boolean clearSuccess = categoryRecipeDAO.removeAllRecipesFromCategory(categoryId);
             if (!clearSuccess) {
                 LOGGER.warning("Failed to clear recipe relations for category " + categoryId);
                 return false;
             }
 
-            // Then delete the category
             boolean deleteSuccess = false;
             try {
                 deleteSuccess = categoryDAO.deleteCategory(categoryId);
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Error deleting category " + categoryId + ": " + e.getMessage(), e);
-                // Optionally: store error message for UI
                 return false;
             }
             if (deleteSuccess) {
