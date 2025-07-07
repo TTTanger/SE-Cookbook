@@ -73,7 +73,7 @@ public class CreateViewController {
     /** Label for image preview hint */
     @FXML
     private Label imgHint;
-    /** 用户图片目录 */
+    /** User image directory */
     private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "cookbook" + File.separator + "imgs";
 
     /**
@@ -110,10 +110,10 @@ public class CreateViewController {
         String cookTime = cookTimeField.getText();
         String serve = serveField.getText();
         String instruction = instructionField.getText();
-        String imgAddr = uploadedImgPath != null ? uploadedImgPath : "Upload_Img.png";
+        String imgAddr = (uploadedImgPath != null && !uploadedImgPath.isEmpty()) ? uploadedImgPath : null;
         List<Ingredient> ingredients = new ArrayList<>();
+        List<String> ingredientNames = new ArrayList<>();
 
-        // Validate main form
         if (title == null || title.trim().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Title cannot be empty");
             alert.setTitle("Error");
@@ -180,6 +180,14 @@ public class CreateViewController {
                     alert.showAndWait();
                     return;
                 }
+                String ingName = nameField.getText().trim();
+                if (ingredientNames.contains(ingName)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Ingredient Name must be unique");
+                    alert.setTitle("Error");
+                    alert.showAndWait();
+                    return;
+                }
+                ingredientNames.add(ingName);
                 int quantity;
                 try {
                     quantity = Integer.parseInt(quantityField.getText());
@@ -244,17 +252,16 @@ public class CreateViewController {
                 }
                 File dest = new File(imgsDir, newName);
                 Files.copy(file.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                uploadedImgPath = newName; // 只存文件名
-                // 预览图片
+                uploadedImgPath = newName; 
                 imgPreview.setImage(new Image(dest.toURI().toString()));
                 imgHint.setVisible(false);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "图片上传成功!", ButtonType.OK);
-                alert.setTitle("提示");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Image uploaded successfully!", ButtonType.OK);
+                alert.setTitle("Info");
                 alert.showAndWait();
             } catch (IOException e) {
                 e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR, "图片上传失败!", ButtonType.OK);
-                alert.setTitle("错误");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Image upload failed!", ButtonType.OK);
+                alert.setTitle("Error");
                 alert.showAndWait();
             }
         }
@@ -296,7 +303,7 @@ public class CreateViewController {
         });
         entry.getChildren().addAll(nameField, new Label(":"), quantityField, unitField, removeBtn, addButton);
         ingredientContainer.getChildren().add(entry);
-        updateRemoveButtons(); // Update remove button state after adding
+        updateRemoveButtons(); 
     }
 
     /**

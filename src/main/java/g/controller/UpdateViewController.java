@@ -28,33 +28,64 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the update recipe view. Handles the update of existing recipes.
+ * 
+ * @author Junzhe Luo
+ * @since 2025-6-15
+ */
 public class UpdateViewController {
 
+    /** Service for recipe operations */
     private final RecipeService recipeService;
 
+    /** Previous data */
     @FXML
     private RecipeDetailResponse previousData;
 
+    /** Title field */
     @FXML
     private TextField titleField;
+    
+    /** Preparation time field */
     @FXML
     private TextField prepTimeField;
+
+    /** Cooking time field */
     @FXML
     private TextField cookTimeField;
+
+    /** Servings field */
     @FXML
     private TextField serveField;
+
+    /** Instruction field */
     @FXML
     private TextArea instructionField;
+
+    /** Ingredient container */
     @FXML
     private VBox ingredientContainer;
+
+    /** Submit button */
     @FXML
     private Button submitButton;
+
+    /** Upload button */
     @FXML
     private Button uploadButton;
+
+    /** Clear image button */
     @FXML
     private Button clearImageButton;
+
+    /** Deleted pair IDs */
     private final List<Integer> deletedPairIds = new ArrayList<>();
+
+    /** Uploaded image path */
     private String uploadedImgPath = null;
+
+    /** Original image path */
     private String originalImgPath = null;
 
     /** ImageView for previewing the uploaded image */
@@ -65,13 +96,19 @@ public class UpdateViewController {
     @FXML
     private Label imgHint;
 
-    /** 用户图片目录 */
+    /** User image directory */
     private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "cookbook" + File.separator + "imgs";
 
+    /**
+     * Constructor initializes the recipe service.
+     */
     public UpdateViewController() {
         this.recipeService = new RecipeService();
     }
 
+    /**
+     * Initializes the controller.
+     */
     @FXML
     public void initialize() {
         System.out.println("UpdateViewController initialized");
@@ -87,6 +124,17 @@ public class UpdateViewController {
         }
     }
 
+    /**
+     * Loads the previous data into the fields.
+     * 
+     * @param title the title of the recipe
+     * @param prepTime the preparation time of the recipe
+     * @param cookTime the cooking time of the recipe
+     * @param serve the number of servings of the recipe
+     * @param ingredients the ingredients of the recipe
+     * @param instructions the instructions of the recipe
+     * @param imgAddr the image address of the recipe
+     */
     @FXML
     public void loadPreviousData(String title, int prepTime, int cookTime, int serve,
             List<Ingredient> ingredients, String instructions, String imgAddr) {
@@ -136,23 +184,18 @@ public class UpdateViewController {
         }
         this.instructionField.setText(instructions);
         
-        // Save original image path and display preview
         this.originalImgPath = imgAddr;
         if (imgAddr != null && !imgAddr.isEmpty() && !"Upload_Img.png".equals(imgAddr)) {
-            // Handle both old and new path formats
             String imgFileName = imgAddr;
-            // Remove "imgs/" prefix if present (old format)
             if (imgFileName.startsWith("imgs/")) {
                 imgFileName = imgFileName.substring(5);
             }
             
-            // Try user directory first (new format)
             File imgFile = new File(USER_IMG_DIR + File.separator + imgFileName);
             if (imgFile.exists()) {
                 imgPreview.setImage(new Image(imgFile.toURI().toString()));
                 imgHint.setVisible(false);
             } else {
-                // Fallback: try old project directory
                 File oldImgFile = new File("imgs" + File.separator + imgFileName);
                 if (oldImgFile.exists()) {
                     imgPreview.setImage(new Image(oldImgFile.toURI().toString()));
@@ -170,6 +213,9 @@ public class UpdateViewController {
         updateRemoveButtons();
     }
 
+    /**
+     * Handles the upload button click event.
+     */
     @FXML
     public void uploadClicked() {
         FileChooser fileChooser = new FileChooser();
@@ -189,7 +235,6 @@ public class UpdateViewController {
                 File dest = new File(imgsDir, newName);
                 Files.copy(file.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 uploadedImgPath = newName; 
-                // Preview the image
                 imgPreview.setImage(new Image(dest.toURI().toString()));
                 imgHint.setVisible(false);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Image uploaded successfully!", ButtonType.OK);
@@ -217,6 +262,9 @@ public class UpdateViewController {
         alert.showAndWait();
     }
 
+    /**
+     * Adds a new ingredient to the ingredient container.
+     */
     @FXML
     private void addIngredient() {
         HBox entry = new HBox(10);
@@ -252,6 +300,9 @@ public class UpdateViewController {
         updateRemoveButtons(); 
     }
     
+    /**
+     * Updates the state of remove buttons for all ingredient rows. Only enabled if more than one row exists.
+     */
     private void updateRemoveButtons() {
         int count = ingredientContainer.getChildren().size();
         for (var node : ingredientContainer.getChildren()) {
@@ -265,6 +316,11 @@ public class UpdateViewController {
         }
     }
 
+    /**
+     * Sets the previous data for the recipe.
+     * 
+     * @param previousData the previous data
+     */
     public void setPreviousData(RecipeDetailResponse previousData) {
         this.previousData = previousData;
         Recipe previousRecipe = previousData.getRecipe();
@@ -281,6 +337,9 @@ public class UpdateViewController {
         System.out.println("Previous data ingredients:" + previousData.getIngredients());
     }
 
+    /**
+     * Handles the update recipe button click event.
+     */
     public void handleUpdateRecipe() {
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmAlert.setTitle("Confirm");
@@ -296,9 +355,8 @@ public class UpdateViewController {
         String cookTime = cookTimeField.getText();
         String serve = serveField.getText();
         String instruction = instructionField.getText();
-        String imgAddr = uploadedImgPath != null ? uploadedImgPath : originalImgPath;
+        String imgAddr = (uploadedImgPath != null && !uploadedImgPath.isEmpty()) ? uploadedImgPath : originalImgPath;
 
-        // Validate main form
         if (title == null || title.trim().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Title cannot be empty");
             alert.setTitle("Error");
@@ -339,6 +397,7 @@ public class UpdateViewController {
             alert.showAndWait();
             return;
         }
+        List<String> ingredientNames = new ArrayList<>();
         for (var node : ingredientContainer.getChildren()) {
             if (node instanceof HBox hbox) {
                 List<javafx.scene.Node> fields = hbox.getChildren();
@@ -361,6 +420,14 @@ public class UpdateViewController {
                     alert.showAndWait();
                     return;
                 }
+                String ingName = nameField.getText().trim();
+                if (ingredientNames.contains(ingName)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Ingredient Name must be unique");
+                    alert.setTitle("Error");
+                    alert.showAndWait();
+                    return;
+                }
+                ingredientNames.add(ingName);
                 int quantity;
                 try {
                     quantity = Integer.parseInt(quantityField.getText());
@@ -381,7 +448,7 @@ public class UpdateViewController {
         recipe.setCookTime(Integer.parseInt(cookTime));
         recipe.setServe(Integer.parseInt(serve));
         recipe.setInstruction(instruction);
-        recipe.setImgAddr(imgAddr);
+        recipe.setImgAddr((imgAddr != null && !imgAddr.isEmpty()) ? imgAddr : null);
 
         List<Ingredient> ingredients = new ArrayList<>();
         for (var node : ingredientContainer.getChildren()) {
@@ -446,13 +513,27 @@ public class UpdateViewController {
         }
     }
 
-    // Set callback
+    /**
+     * Callback interface for update recipe.
+     * 
+     * @author Junzhe Luo
+     * @since 2025-6-15
+     */
     public interface UpdateCallback {
-
+        /**
+         * Called when the update recipe is successful.
+         */
         void onUpdateSuccess();
     }
+
+    /** Update callback */
     private UpdateCallback updateCallback;
 
+    /**
+     * Sets the update callback.
+     * 
+     * @param callback the update callback
+     */
     public void setUpdateCallback(UpdateCallback callback) {
         this.updateCallback = callback;
     }

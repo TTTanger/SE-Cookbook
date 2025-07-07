@@ -24,8 +24,10 @@ import javafx.scene.control.TextInputDialog;
  */
 public class CategoryViewController implements Initializable {
 
+    /** Logger for logging messages */
     private static final Logger LOGGER = Logger.getLogger(CategoryViewController.class.getName());
     
+    /** No category selected */
     private static final int NO_CATEGORY_SELECTED = -1;
 
     /** VBox for the left pane (category list) */
@@ -36,7 +38,6 @@ public class CategoryViewController implements Initializable {
     @FXML
     private VBox rightPane;
 
-    // Controllers for included FXML components
     /** Controller for the category list */
     @FXML
     private CategoryListController categoryListController;
@@ -91,23 +92,19 @@ public class CategoryViewController implements Initializable {
         setupRecipeSelectionCallback();
         setupSearchCallback();
         setupInitialState();
-        // Set callback for recipe detail actions to refresh center and right pane after update
         recipeDetailCardController.setCallback(new RecipeDetailCardController.DetailCallback() {
             @Override
             public void onRecipeDeleted(int recipeId) {
-                // Refresh the center list and clear the right detail when a recipe is deleted
                 listViewController.loadRecipesByCategory(currentCategoryId);
                 recipeDetailCardController.showEmptyMessage();
             }
             @Override
             public void onRecipeUpdated(int recipeId) {
-                // Refresh the center list and right detail when a recipe is updated
                 listViewController.loadRecipesByCategory(currentCategoryId);
                 recipeDetailCardController.loadRecipeData(recipeId);
             }
             @Override
             public void onBack() {
-                // Clear the right detail when back is pressed
                 recipeDetailCardController.showEmptyMessage();
             }
         });
@@ -129,16 +126,14 @@ public class CategoryViewController implements Initializable {
             if (category != null) {
                 currentCategoryId = category.getCategoryId();
                 listViewController.loadRecipesByCategory(currentCategoryId);
-                recipeDetailCardController.showEmptyMessage(); // Clear right detail when switching category
-                // Show list, hide empty message
+                recipeDetailCardController.showEmptyMessage(); 
                 categoryEmptyLabel.setVisible(false);
                 categoryEmptyLabel.setManaged(false);
                 listViewController.setListViewVisible(true);
             } else {
                 currentCategoryId = NO_CATEGORY_SELECTED;
-                listViewController.clearList(); // Clear middle list when no category selected
+                listViewController.clearList(); 
                 recipeDetailCardController.showEmptyMessage();
-                // Show empty message, hide list
                 categoryEmptyLabel.setText("Select a Category");
                 categoryEmptyLabel.setVisible(true);
                 categoryEmptyLabel.setManaged(true);
@@ -155,7 +150,7 @@ public class CategoryViewController implements Initializable {
             if (recipeId != NO_CATEGORY_SELECTED) {
                 recipeDetailCardController.loadRecipeData(recipeId);
             } else {
-                recipeDetailCardController.showEmptyMessage(); // Show prompt when no recipe selected
+                recipeDetailCardController.showEmptyMessage(); 
             }
         });
     }
@@ -168,7 +163,7 @@ public class CategoryViewController implements Initializable {
             if (currentCategoryId > 0) {
                 listViewController.searchInCategory(currentCategoryId, keyword);
             } else {
-                listViewController.clearList(); // Clear if no category selected
+                listViewController.clearList(); 
             }
             recipeDetailCardController.showEmptyMessage();
         });
@@ -178,10 +173,8 @@ public class CategoryViewController implements Initializable {
      * Sets up the initial state of the view.
      */
     private void setupInitialState() {
-        // Clear on initialization
         listViewController.clearList();
         recipeDetailCardController.showEmptyMessage();
-        // Default: show empty message, hide list
         categoryEmptyLabel.setVisible(true);
         categoryEmptyLabel.setManaged(true);
         listViewController.setListViewVisible(false);
@@ -229,7 +222,6 @@ public class CategoryViewController implements Initializable {
             return;
         }
 
-        // Get the selected category name
         String currentName = categoryListController.getSelectedCategoryName();
         if (currentName == null) {
             LOGGER.warning("Failed to get selected category name");
@@ -272,7 +264,6 @@ public class CategoryViewController implements Initializable {
             return;
         }
 
-        // Get the selected category name
         String categoryName = categoryListController.getSelectedCategoryName();
         if (categoryName == null) {
             LOGGER.warning("Failed to get selected category name for deletion");
@@ -291,7 +282,6 @@ public class CategoryViewController implements Initializable {
                 if (success) {
                     LOGGER.info("Category deleted successfully: " + categoryName);
                     showAlert(Alert.AlertType.INFORMATION, "Category deleted successfully!");
-                    // Clear current selection and refresh list
                     currentCategoryId = NO_CATEGORY_SELECTED;
                     categoryListController.refreshList();
                     listViewController.clearList();

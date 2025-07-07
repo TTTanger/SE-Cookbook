@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
  */
 public class CategoryListController implements Initializable {
 
+    /** Logger for logging messages */
     private static final Logger LOGGER = Logger.getLogger(CategoryListController.class.getName());
 
     /** Service for category operations */

@@ -1,5 +1,4 @@
 package g.model;
-import java.util.Objects;
 
 /**
  * Represents an ingredient in a recipe.
@@ -11,10 +10,19 @@ import java.util.Objects;
  */
 public class Ingredient {
 
+    /** Pair ID */
     private int pairId;
+
+    /** Recipe ID */
     private int recipeId;
+
+    /** Ingredient name */
     private String ingredientName;
+
+    /** Ingredient amount */
     private int ingredientAmount;
+
+    /** Ingredient unit */
     private String ingredientUnit;
 
     /**
@@ -146,22 +154,11 @@ public class Ingredient {
         this.ingredientUnit = ingredientUnit != null ? ingredientUnit.trim() : "";
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Ingredient)) {
-            return false;
-        }
-        Ingredient ingredient = (Ingredient) o;
-        return pairId == ingredient.pairId && recipeId == ingredient.recipeId && Objects.equals(ingredientName, ingredient.ingredientName) && ingredientAmount == ingredient.ingredientAmount && Objects.equals(ingredientUnit, ingredient.ingredientUnit);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(pairId, recipeId, ingredientName, ingredientAmount, ingredientUnit);
-    }
-
+    /**
+     * Returns a string representation of the ingredient.
+     * 
+     * @return a string representation of the ingredient
+     */
     @Override
     public String toString() {
         return "{" +

@@ -15,15 +15,19 @@ import javafx.scene.control.Button;
  */
 public class SearchBarController {
 
+    /** Logger for logging messages */
     @FXML
     private TextField searchField;
-
+    
+    /** Search button */
     @FXML
     private Button searchButton;
 
+    /** Clear button */
     @FXML
     private Button clearButton;
 
+    /** Search callback */
     private SearchCallback callback;
 
     /**
@@ -51,7 +55,7 @@ public class SearchBarController {
     public void clearSearch(ActionEvent event) {
         searchField.clear();
         if (callback != null) {
-            callback.onSearch(""); // Trigger search with empty string to clear results
+            callback.onSearch(""); 
         }
     }
 

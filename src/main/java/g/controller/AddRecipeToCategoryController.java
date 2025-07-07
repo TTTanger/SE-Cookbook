@@ -26,8 +26,10 @@ import javafx.stage.Stage;
  */
 public class AddRecipeToCategoryController implements Initializable {
 
+    /** Logger for logging messages */
     private static final Logger LOGGER = Logger.getLogger(AddRecipeToCategoryController.class.getName());
     
+    /** Invalid recipe ID */
     private static final int INVALID_RECIPE_ID = -1;
 
     /** Container for category checkboxes */
@@ -77,7 +79,6 @@ public class AddRecipeToCategoryController implements Initializable {
      * Loads all categories and the categories currently associated with the recipe.
      */
     private void loadCategoryData() {
-        // Query which categories this recipe already belongs to
         originalCategories = categoryService.getCategoriesByRecipeId(recipeId);
     }
 
@@ -87,7 +88,6 @@ public class AddRecipeToCategoryController implements Initializable {
     private void setupCategoryCheckboxes() {
         List<CategoryResponse> allCategories = categoryService.getAllCategories();
         
-        // Extract the set of IDs of the initially selected categories
         List<Integer> originalCategoryIds = originalCategories.stream()
                 .map(CategoryResponse::getCategoryId)
                 .collect(Collectors.toList());
@@ -96,7 +96,6 @@ public class AddRecipeToCategoryController implements Initializable {
         for (CategoryResponse category : allCategories) {
             CheckBox checkBox = new CheckBox(category.getCategoryName());
             checkBox.setUserData(category.getCategoryId());
-            // If it already belongs to this category, check it
             if (originalCategoryIds.contains(category.getCategoryId())) {
                 checkBox.setSelected(true);
             }
@@ -120,7 +119,6 @@ public class AddRecipeToCategoryController implements Initializable {
             List<Integer> selectedCategoryIds = getSelectedCategoryIds();
             List<Integer> originalCategoryIds = getOriginalCategoryIds();
 
-            // Check if there's a change
             boolean changed = hasCategorySelectionChanged(selectedCategoryIds, originalCategoryIds);
 
             if (!changed) {
@@ -129,7 +127,6 @@ public class AddRecipeToCategoryController implements Initializable {
                 return;
             }
 
-            // Update only if there's a change
             boolean updateSuccess = categoryService.updateRecipeToCategory(selectedCategoryIds, recipeId);
             if (!updateSuccess) {
                 LOGGER.warning("Failed to update categories for recipe: " + recipeId);

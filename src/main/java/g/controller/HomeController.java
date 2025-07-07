@@ -23,6 +23,7 @@ import javafx.stage.Stage;
  */
 public class HomeController implements Initializable {
     
+    /** Logger for logging messages */
     private static final Logger LOGGER = Logger.getLogger(HomeController.class.getName());
     
     /** Controller for the recipe list view */
@@ -62,7 +63,7 @@ public class HomeController implements Initializable {
         setupListViewControllerCallback();
         setupRecipeDetailCardCallback();
         setupSearchBarCallback();
-        showEmptyPane(); // Show empty pane by default
+        showEmptyPane(); 
     }
 
     /**
@@ -123,7 +124,6 @@ public class HomeController implements Initializable {
             Parent root = loader.load();
             CreateViewController controller = loader.getController();
             
-            // Callback to refresh the list view after creation
             controller.setOnCreateSuccess(() -> {
                 LOGGER.info("CreateView created successfully, refreshing ListView");
                 listViewController.refreshList();
