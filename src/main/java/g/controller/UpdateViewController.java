@@ -65,6 +65,9 @@ public class UpdateViewController {
     @FXML
     private Label imgHint;
 
+    /** 用户图片目录 */
+    private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "cookbook" + File.separator + "imgs";
+
     public UpdateViewController() {
         this.recipeService = new RecipeService();
     }
@@ -76,7 +79,7 @@ public class UpdateViewController {
             addIngredient();
         }
         if (uploadedImgPath != null && !uploadedImgPath.isEmpty()) {
-            imgPreview.setImage(new Image(new File(uploadedImgPath).toURI().toString()));
+            imgPreview.setImage(new Image(new File(USER_IMG_DIR + File.separator + uploadedImgPath).toURI().toString()));
             imgHint.setVisible(false);
         } else {
             imgPreview.setImage(null);
@@ -135,21 +138,24 @@ public class UpdateViewController {
         
         // Save original image path and display preview
         this.originalImgPath = imgAddr;
-        if (imgAddr != null && !imgAddr.isEmpty() && !"default_image.jpg".equals(imgAddr)) {
-            // Try to load from jar resource first
-            String imgPath = imgAddr;
-            if (!imgPath.startsWith("/")) {
-                imgPath = "/" + imgPath;
+        if (imgAddr != null && !imgAddr.isEmpty() && !"Upload_Img.png".equals(imgAddr)) {
+            // Handle both old and new path formats
+            String imgFileName = imgAddr;
+            // Remove "imgs/" prefix if present (old format)
+            if (imgFileName.startsWith("imgs/")) {
+                imgFileName = imgFileName.substring(5);
             }
-            java.net.URL resourceUrl = getClass().getResource(imgPath);
-            if (resourceUrl != null) {
-                imgPreview.setImage(new Image(resourceUrl.toExternalForm()));
+            
+            // Try user directory first (new format)
+            File imgFile = new File(USER_IMG_DIR + File.separator + imgFileName);
+            if (imgFile.exists()) {
+                imgPreview.setImage(new Image(imgFile.toURI().toString()));
                 imgHint.setVisible(false);
             } else {
-                // Fallback: try as file system path
-                File imgFile = new File(imgAddr);
-                if (imgFile.exists()) {
-                    imgPreview.setImage(new Image(imgFile.toURI().toString()));
+                // Fallback: try old project directory
+                File oldImgFile = new File("imgs" + File.separator + imgFileName);
+                if (oldImgFile.exists()) {
+                    imgPreview.setImage(new Image(oldImgFile.toURI().toString()));
                     imgHint.setVisible(false);
                 } else {
                     imgPreview.setImage(null);
@@ -176,9 +182,13 @@ public class UpdateViewController {
             try {
                 String ext = file.getName().substring(file.getName().lastIndexOf('.'));
                 String newName = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()) + ext;
-                File dest = new File("imgs", newName);
+                File imgsDir = new File(USER_IMG_DIR);
+                if (!imgsDir.exists()) {
+                    imgsDir.mkdirs();
+                }
+                File dest = new File(imgsDir, newName);
                 Files.copy(file.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                uploadedImgPath = "imgs/" + newName;
+                uploadedImgPath = newName; 
                 // Preview the image
                 imgPreview.setImage(new Image(dest.toURI().toString()));
                 imgHint.setVisible(false);

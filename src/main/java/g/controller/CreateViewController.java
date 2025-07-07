@@ -73,6 +73,8 @@ public class CreateViewController {
     /** Label for image preview hint */
     @FXML
     private Label imgHint;
+    /** 用户图片目录 */
+    private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "cookbook" + File.separator + "imgs";
 
     /**
      * Constructor initializes the recipe service.
@@ -90,7 +92,7 @@ public class CreateViewController {
         updateRemoveButtons();
         System.out.println("CreateViewController initialized");
         if (uploadedImgPath != null && !uploadedImgPath.isEmpty()) {
-            imgPreview.setImage(new Image(new File(uploadedImgPath).toURI().toString()));
+            imgPreview.setImage(new Image(new File(USER_IMG_DIR + File.separator + uploadedImgPath).toURI().toString()));
             imgHint.setVisible(false);
         } else {
             imgPreview.setImage(null);
@@ -108,7 +110,7 @@ public class CreateViewController {
         String cookTime = cookTimeField.getText();
         String serve = serveField.getText();
         String instruction = instructionField.getText();
-        String imgAddr = uploadedImgPath != null ? uploadedImgPath : "default_image.jpg";
+        String imgAddr = uploadedImgPath != null ? uploadedImgPath : "Upload_Img.png";
         List<Ingredient> ingredients = new ArrayList<>();
 
         // Validate main form
@@ -236,19 +238,23 @@ public class CreateViewController {
             try {
                 String ext = file.getName().substring(file.getName().lastIndexOf('.'));
                 String newName = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()) + ext;
-                File dest = new File("imgs", newName);
+                File imgsDir = new File(USER_IMG_DIR);
+                if (!imgsDir.exists()) {
+                    imgsDir.mkdirs();
+                }
+                File dest = new File(imgsDir, newName);
                 Files.copy(file.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                uploadedImgPath = "imgs/" + newName;
-                // Preview the image
+                uploadedImgPath = newName; // 只存文件名
+                // 预览图片
                 imgPreview.setImage(new Image(dest.toURI().toString()));
                 imgHint.setVisible(false);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Image uploaded successfully!", ButtonType.OK);
-                alert.setTitle("Info");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "图片上传成功!", ButtonType.OK);
+                alert.setTitle("提示");
                 alert.showAndWait();
             } catch (IOException e) {
                 e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Image upload failed!", ButtonType.OK);
-                alert.setTitle("Error");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "图片上传失败!", ButtonType.OK);
+                alert.setTitle("错误");
                 alert.showAndWait();
             }
         }

@@ -190,4 +190,75 @@ public class DBUtil {
             LOGGER.log(Level.SEVERE, "Database connection test failed!", e);
         }
     }
+
+    /**
+     * Initializes the user image directory by creating the necessary directory and copying the initial images from the jar resource.
+     */
+    public static void initializeUserImageDirectory() {
+        try {
+            String userImgDir = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "cookbook" + File.separator + "imgs";
+            File userDir = new File(userImgDir);
+            if (!userDir.exists()) {
+                userDir.mkdirs();
+            }
+            
+            // Copy initial images
+            String[] initialImages = {
+                "20250628162751870.png",
+                "20250628162804511.png", 
+                "20250628162827181.png",
+                "20250628162852335.png",
+                "20250628163755905.png",
+                "20250628164943332.png",
+                "20250628165647014.png",
+                "20250628170256916.png"
+            };
+            
+            int copiedCount = 0;
+            for (String imageName : initialImages) {
+                File destFile = new File(userDir, imageName);
+                if (!destFile.exists()) {
+                    // Try multiple resource paths
+                    java.net.URL imageUrl = null;
+                    
+                    // Try different resource paths
+                    String[] resourcePaths = {
+                        "imgs/" + imageName,
+                        "/imgs/" + imageName,
+                        "g/imgs/" + imageName,
+                        "/g/imgs/" + imageName
+                    };
+                    
+                    for (String path : resourcePaths) {
+                        imageUrl = DBUtil.class.getClassLoader().getResource(path);
+                        if (imageUrl != null) {
+                            System.out.println("Found image at: " + path);
+                            break;
+                        }
+                    }
+                    
+                    if (imageUrl != null) {
+                        try (java.io.InputStream in = imageUrl.openStream();
+                             java.io.FileOutputStream out = new java.io.FileOutputStream(destFile)) {
+                            byte[] buffer = new byte[1024];
+                            int length;
+                            while ((length = in.read(buffer)) > 0) {
+                                out.write(buffer, 0, length);
+                            }
+                        }
+                        System.out.println("Copied initial image: " + imageName);
+                        copiedCount++;
+                    } else {
+                        System.err.println("Could not find image resource: " + imageName);
+                    }
+                }
+            }
+            
+            System.out.println("Image initialization completed. Copied " + copiedCount + " images.");
+            
+        } catch (Exception e) {
+            System.err.println("Failed to initialize user image directory: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

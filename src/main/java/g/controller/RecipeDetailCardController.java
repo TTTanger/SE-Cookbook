@@ -48,6 +48,8 @@ public class RecipeDetailCardController implements Initializable {
     private final CalculateService calculateService;
     /** The current recipe ID */
     private int recipeId;
+    /** User image directory */
+    private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "cookbook" + File.separator + "imgs";
     /** Update view controller */
     @FXML
     private UpdateViewController updateViewController;
@@ -149,11 +151,11 @@ public class RecipeDetailCardController implements Initializable {
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, recipe.getServe());
         serveSpinner.setValueFactory(valueFactory);
         serveSpinner.setEditable(true);
-        // 监听serving变化
+        // Listen to serving changes
         serveSpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
             updateIngredientsBox(recipeId, newValue);
         });
-        // 初始加载
+        // Initial load
         updateIngredientsBox(recipeId, serveSpinner.getValue());
         // Instructions Label
         instructionsLabel.setText(recipe.getInstruction());
@@ -164,19 +166,34 @@ public class RecipeDetailCardController implements Initializable {
                 if (recipe.getImgAddr().startsWith("http")) {
                     // Load image from URL
                     img = new Image(recipe.getImgAddr(), true);
-                } else {
-                    // Try to load from jar resource first
-                    String imgPath = recipe.getImgAddr();
-                    if (!imgPath.startsWith("/")) {
-                        imgPath = "/" + imgPath;
-                    }
-                    // Try as resource
-                    java.net.URL resourceUrl = getClass().getResource(imgPath);
+                } else if ("Upload_Img.png".equals(recipe.getImgAddr())) {
+                    // Load default image from resources
+                    java.net.URL resourceUrl = getClass().getResource("/g/Upload_Img.png");
                     if (resourceUrl != null) {
                         img = new Image(resourceUrl.toExternalForm(), true);
                     } else {
-                        // Fallback: try as file system path
-                        img = new Image(new File(recipe.getImgAddr()).toURI().toString(), true);
+                        img = null;
+                    }
+                } else {
+                    // Handle both old and new path formats
+                    String imgFileName = recipe.getImgAddr();
+                    // Remove "imgs/" prefix if present (old format)
+                    if (imgFileName.startsWith("imgs/")) {
+                        imgFileName = imgFileName.substring(5);
+                    }
+                    
+                    // Try user directory first (new format)
+                    File imgFile = new File(USER_IMG_DIR + File.separator + imgFileName);
+                    if (imgFile.exists()) {
+                        img = new Image(imgFile.toURI().toString(), true);
+                    } else {
+                        // Fallback: try old project directory
+                        File oldImgFile = new File("imgs" + File.separator + imgFileName);
+                        if (oldImgFile.exists()) {
+                            img = new Image(oldImgFile.toURI().toString(), true);
+                        } else {
+                            img = null;
+                        }
                     }
                 }
                 imgView.setImage(img);
