@@ -1,7 +1,6 @@
 package g.dto;
 
 import java.util.List;
-import java.util.Objects;
 
 import g.model.Ingredient;
 
@@ -47,19 +46,6 @@ public class CalculateResponse {
      */
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        CalculateResponse that = (CalculateResponse) obj;
-        return Objects.equals(ingredients, that.ingredients);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(ingredients);
     }
 
     @Override

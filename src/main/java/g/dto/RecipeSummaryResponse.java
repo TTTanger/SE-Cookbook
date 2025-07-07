@@ -58,19 +58,6 @@ public class RecipeSummaryResponse {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        RecipeSummaryResponse that = (RecipeSummaryResponse) obj;
-        return recipeId == that.recipeId;
-    }
-
-    @Override
-    public int hashCode() {
-        return Integer.hashCode(recipeId);
-    }
-
-    @Override
     public String toString() {
         return "RecipeSummaryResponse{" +
                 "recipeId=" + recipeId +

@@ -13,7 +13,7 @@ import g.model.Category;
 import g.utils.DBUtil;
 
 /**
- * Data Access Object for Category entities.
+ * Data Access Object for Category table.
  * This class provides database operations for managing recipe categories
  * including CRUD operations and category retrieval.
  * 
@@ -58,6 +58,7 @@ public class CategoryDAO {
     /**
      * Deletes a category from the database.
      * Throws SQLException if deletion fails, so the service layer can provide detailed error messages.
+     * 
      * @param categoryId the ID of the category to delete
      * @return true if the category was deleted successfully, false otherwise
      * @throws SQLException if a database access error occurs
@@ -166,22 +167,4 @@ public class CategoryDAO {
         }
     }
 
-    public static void main(String[] args) {
-
-        // CategoryDAO categorydao = new CategoryDAO();
-        
-        // categorydao.createCategory("tc1");
-        // categorydao.createCategory("tc2");
-        // categorydao.createCategory("tc3");
-        // categorydao.createCategory("tc4");
-        // categorydao.deleteCategory(13);
-        // categorydao.updateCategory(14, "update");
-        // List<Category> categories =categorydao.getAllCategories();
-        // System.out.println("Success: Found " + categories.size() + " categories.");
-        //     for (Category category : categories) {
-        //         System.out.println("Category ID: " + category.getCategoryId() +
-        //                            ", Name: " + category.getCategoryName());
-        // }
-
-    }
 }
