@@ -10,19 +10,14 @@ package g.model;
  */
 public class Ingredient {
 
-    /** Pair ID */
+    /**
+     * Unique identifier for the ingredient-recipe pair.
+     * This field is used to identify the relationship between an ingredient and a recipe.
+     */
     private int pairId;
-
-    /** Recipe ID */
     private int recipeId;
-
-    /** Ingredient name */
     private String ingredientName;
-
-    /** Ingredient amount */
     private int ingredientAmount;
-
-    /** Ingredient unit */
     private String ingredientUnit;
 
     /**

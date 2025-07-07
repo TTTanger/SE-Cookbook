@@ -9,10 +9,12 @@ package g.model;
  * @since 2025-6-15
  */
 public class Category {
-    /** Category ID */
-    private int categoryId;
 
-    /** Category name */
+    /**
+     * Unique identifier for the category.
+     * This field is used to identify the category in the database.
+     */
+    private int categoryId;
     private String categoryName;
 
     /**

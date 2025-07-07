@@ -22,6 +22,10 @@ import g.model.Recipe;
  */
 public class RecipeService {
 
+    /**
+     * Data Access Object for recipes.
+     * This DAO is used to interact with the recipe data in the database.
+     */
     private final RecipeDAO recipeDAO;
     private final IngredientDAO ingredientDAO;
 

@@ -13,6 +13,10 @@ import g.model.Ingredient;
  * @since 2025-6-15
  */
 public class CalculateResponse {
+    /**
+     * List of calculated ingredients.
+     * This field contains the ingredients with their amounts scaled according to the recipe servings.
+     */
     private List<Ingredient> ingredients; 
 
     /**

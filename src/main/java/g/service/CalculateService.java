@@ -18,6 +18,10 @@ import g.model.Ingredient;
  */
 public class CalculateService {
 
+    /**
+     * Data Access Object for ingredients.
+     * This DAO is used to interact with the ingredient data in the database.
+     */
     private final IngredientDAO ingredientDAO;
     private final RecipeDAO recipeDAO;
         

@@ -10,6 +10,10 @@ package g.dto;
  */
 public class CategoryResponse {
     
+    /**
+     * Unique identifier for the category.
+     * This field is used to identify the category in the database.
+     */
     private int categoryId;
     private String categoryName;
 

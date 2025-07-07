@@ -15,6 +15,10 @@ import g.model.Recipe;
  */
 public class RecipeDetailRequest {
     
+    /**
+     * The recipe to be updated.
+     * This field contains the recipe information including title, preparation time, etc.
+     */
     private Recipe recipe;
     private List<Ingredient> ingredients;
     private List<Integer> deleteIds;

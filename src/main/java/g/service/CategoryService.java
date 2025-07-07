@@ -25,6 +25,10 @@ import g.model.Recipe;
 public class CategoryService {
     private static final Logger LOGGER = Logger.getLogger(CategoryService.class.getName());
     
+    /**
+     * Data Access Object for category-recipe relationships.
+     * This DAO is used to manage the many-to-many relationship between recipes and categories.
+     */
     private final CategoryRecipeDAO categoryRecipeDAO;
     private final RecipeDAO recipeDAO; 
     private final CategoryDAO categoryDAO;

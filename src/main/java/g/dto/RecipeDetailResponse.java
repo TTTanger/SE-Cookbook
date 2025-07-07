@@ -15,6 +15,10 @@ import g.model.Recipe;
  */
 public class RecipeDetailResponse {
 
+    /**
+     * The recipe information.
+     * This field contains the recipe details such as title, preparation time, etc.
+     */
     private Recipe recipe;
     private List<Ingredient> ingredients;
 

@@ -25,6 +25,8 @@ public class RecipeDAO {
     
     private static final Logger LOGGER = Logger.getLogger(RecipeDAO.class.getName());
     
+    // SQL queries for recipe operations
+    // Using prepared statements to prevent SQL injection and improve performance
     private static final String CREATE_RECIPE_SQL = 
         "INSERT INTO recipe (title, prep_time, cook_time, instruction, img_addr, serve) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String DELETE_RECIPE_SQL = "DELETE FROM recipe WHERE recipe_id = ?";

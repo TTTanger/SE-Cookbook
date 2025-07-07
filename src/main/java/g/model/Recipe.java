@@ -10,6 +10,11 @@ package g.model;
  * @since 2025-6-15
  */
 public class Recipe {
+    
+    /**
+     * Unique identifier for the recipe.
+     * This field is used to identify the recipe in the database.
+     */
     private int recipeId;
     private String title;
     private int prepTime;

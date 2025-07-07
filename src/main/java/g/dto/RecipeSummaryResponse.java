@@ -9,6 +9,11 @@ package g.dto;
  * @since 2025-6-15
  */
 public class RecipeSummaryResponse {
+    
+    /**
+     * Unique identifier for the recipe.
+     * This field is used to identify the recipe in the database.
+     */
     private int recipeId;
     private String title;
     private String imgAddr;

@@ -24,6 +24,8 @@ public class CategoryDAO {
     
     private static final Logger LOGGER = Logger.getLogger(CategoryDAO.class.getName());
     
+    // SQL queries for category operations
+    // Using prepared statements to prevent SQL injection and improve performance
     private static final String CREATE_CATEGORY_SQL = "INSERT INTO category (category_name) VALUES (?)";
     private static final String DELETE_CATEGORY_SQL = "DELETE FROM category WHERE category_id = ?";
     private static final String UPDATE_CATEGORY_SQL = "UPDATE category SET category_name = ? WHERE category_id = ?";
