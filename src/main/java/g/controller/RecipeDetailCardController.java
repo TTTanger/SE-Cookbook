@@ -36,7 +36,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.ColumnConstraints;
 
 /**
- * Controller for the recipe detail card view. Handles the display and interaction of recipe details.
+ * Controller for the recipe detail card view. Handles the display and
+ * interaction of recipe details.
  *
  * @author Junzhe Luo
  */
@@ -44,75 +45,101 @@ public class RecipeDetailCardController implements Initializable {
 
     /** Service for recipe operations */
     private final RecipeService recipeService;
+
     /** Service for ingredient calculation */
     private final CalculateService calculateService;
+
     /** The current recipe ID */
     private int recipeId;
+
     /** User image directory */
-    private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "cookbook" + File.separator + "imgs";
+    private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + "Documents"
+            + File.separator + "cookbook" + File.separator + "imgs";
+
     /** Update view controller */
     @FXML
     private UpdateViewController updateViewController;
+
     /** Label for the recipe title */
     @FXML
     private Label title;
+
     /** Label for preparation time */
     @FXML
     private Label prepTime;
+
     /** Label for cooking time */
     @FXML
     private Label cookTime;
+
     /** TextArea for ingredients (not used in table) */
     @FXML
     private TextArea ingredients;
+
     /** Label for instructions */
     @FXML
     private TextArea instructions;
+
     /** Spinner for servings */
     @FXML
     private Spinner<Integer> serveSpinner;
+
     /** TableView for ingredients */
     @FXML
     private TableView<Ingredient> ingredientsTable;
+
     /** TableColumn for ingredient name */
     @FXML
     private TableColumn<Ingredient, String> ingredientNameCol;
+
     /** TableColumn for ingredient amount */
     @FXML
     private TableColumn<Ingredient, Integer> ingredientAmountCol;
+
     /** TableColumn for ingredient unit */
     @FXML
     private TableColumn<Ingredient, String> ingredientUnitCol;
+
     /** Label for empty recipe message */
     @FXML
     private Label emptyLabel;
+
     /** VBox for detail content */
     @FXML
     private VBox detailContainer;
+
     /** ImageView for recipe image */
     @FXML
     private ImageView imgView;
+
     /** AnchorPane for empty message */
     @FXML
     private AnchorPane emptyPane;
+
     /** VBox for ingredients */
     @FXML
     private VBox ingredientsBox;
+
     /** Label for instructions */
     @FXML
     private Label instructionsLabel;
+
     /** Button for categorize recipe */
     @FXML
     private Button recipeCategorizeButton;
+
     /** Button for update recipe */
     @FXML
     private Button recipeUpdateButton;
+
     /** Button for delete recipe */
     @FXML
     private Button recipeDeleteButton;
+
     /** Button for back */
     @FXML
     private Button recipeBackButton;
+    
 
     /**
      * Constructor initializes the recipe and calculation services.
@@ -125,8 +152,11 @@ public class RecipeDetailCardController implements Initializable {
 
     /**
      * Initializes the controller and sets up the TableView and Spinner.
-     * @param location The location used to resolve relative paths for the root object, or null if unknown.
-     * @param resources The resources used to localize the root object, or null if not localized.
+     * 
+     * @param location  The location used to resolve relative paths for the root
+     *                  object, or null if unknown.
+     * @param resources The resources used to localize the root object, or null if
+     *                  not localized.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -138,6 +168,7 @@ public class RecipeDetailCardController implements Initializable {
 
     /**
      * Loads recipe data by recipe ID and updates the detail view.
+     * 
      * @param recipeId The recipe ID
      */
     @FXML
@@ -148,26 +179,21 @@ public class RecipeDetailCardController implements Initializable {
         this.title.setText(recipe.getTitle());
         this.prepTime.setText(String.valueOf(recipe.getPrepTime()));
         this.cookTime.setText(String.valueOf(recipe.getCookTime()));
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, recipe.getServe());
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100,
+                recipe.getServe());
         serveSpinner.setValueFactory(valueFactory);
         serveSpinner.setEditable(true);
-        // Listen to serving changes
         serveSpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
             updateIngredientsBox(recipeId, newValue);
         });
-        // Initial load
         updateIngredientsBox(recipeId, serveSpinner.getValue());
-        // Instructions Label
         instructionsLabel.setText(recipe.getInstruction());
-        // Image
         if (recipe.getImgAddr() != null && !recipe.getImgAddr().isEmpty()) {
             try {
                 Image img;
                 if (recipe.getImgAddr().startsWith("http")) {
-                    // Load image from URL
                     img = new Image(recipe.getImgAddr(), true);
                 } else if ("Upload_Img.png".equals(recipe.getImgAddr())) {
-                    // Load default image from resources
                     java.net.URL resourceUrl = getClass().getResource("/g/Upload_Img.png");
                     if (resourceUrl != null) {
                         img = new Image(resourceUrl.toExternalForm(), true);
@@ -175,19 +201,14 @@ public class RecipeDetailCardController implements Initializable {
                         img = null;
                     }
                 } else {
-                    // Handle both old and new path formats
                     String imgFileName = recipe.getImgAddr();
-                    // Remove "imgs/" prefix if present (old format)
                     if (imgFileName.startsWith("imgs/")) {
                         imgFileName = imgFileName.substring(5);
                     }
-                    
-                    // Try user directory first (new format)
                     File imgFile = new File(USER_IMG_DIR + File.separator + imgFileName);
                     if (imgFile.exists()) {
                         img = new Image(imgFile.toURI().toString(), true);
                     } else {
-                        // Fallback: try old project directory
                         File oldImgFile = new File("imgs" + File.separator + imgFileName);
                         if (oldImgFile.exists()) {
                             img = new Image(oldImgFile.toURI().toString(), true);
@@ -208,11 +229,11 @@ public class RecipeDetailCardController implements Initializable {
 
     /**
      * Handles the delete recipe button click event.
+     * 
      * @param event The action event
      */
     @FXML
     public void onRecipeDeleteClicked(ActionEvent event) {
-        // Show confirmation dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm");
         alert.setHeaderText(null);
@@ -230,6 +251,7 @@ public class RecipeDetailCardController implements Initializable {
 
     /**
      * Handles the update recipe button click event.
+     * 
      * @param event The action event
      */
     @FXML
@@ -258,6 +280,7 @@ public class RecipeDetailCardController implements Initializable {
 
     /**
      * Handles the back button click event.
+     * 
      * @param event The action event
      */
     @FXML
@@ -270,6 +293,7 @@ public class RecipeDetailCardController implements Initializable {
 
     /**
      * Handles the categorize recipe button click event.
+     * 
      * @param event The action event
      */
     @FXML
@@ -295,13 +319,17 @@ public class RecipeDetailCardController implements Initializable {
      */
     public interface DetailCallback {
         void onRecipeDeleted(int recipeId);
+
         void onRecipeUpdated(int recipeId);
+
         void onBack();
     }
+
     private DetailCallback callback;
 
     /**
      * Sets the callback for detail actions.
+     * 
      * @param callback The callback to set
      */
     public void setCallback(DetailCallback callback) {
@@ -310,8 +338,9 @@ public class RecipeDetailCardController implements Initializable {
 
     /**
      * Updates the ingredients display based on servings.
+     * 
      * @param recipeId The recipe ID
-     * @param serve The number of servings
+     * @param serve    The number of servings
      */
     private void updateIngredientsBox(int recipeId, int serve) {
         CalculateResponse scaledIngredients = calculateService.IngredientCalculate(recipeId, serve);
@@ -320,9 +349,9 @@ public class RecipeDetailCardController implements Initializable {
         GridPane grid = new GridPane();
         grid.setHgap(0);
         grid.setVgap(0);
-        String[] headers = {"Name", "Amount", "Unit"};
-        int[] minWidths = {160, 60, 80}; // name, amount, unit
-        int[] prefWidths = {200, 80, 100};
+        String[] headers = { "Name", "Amount", "Unit" };
+        int[] minWidths = { 160, 60, 80 }; // name, amount, unit
+        int[] prefWidths = { 200, 80, 100 };
         for (int col = 0; col < 3; col++) {
             Label header = new Label(headers[col]);
             header.setWrapText(true);
@@ -341,9 +370,9 @@ public class RecipeDetailCardController implements Initializable {
             for (int row = 0; row < ingredientsList.size(); row++) {
                 Ingredient ing = ingredientsList.get(row);
                 String[] values = {
-                    ing.getIngredientName(),
-                    String.valueOf(ing.getIngredientAmount()),
-                    ing.getIngredientUnit()
+                        ing.getIngredientName(),
+                        String.valueOf(ing.getIngredientAmount()),
+                        ing.getIngredientUnit()
                 };
                 for (int col = 0; col < 3; col++) {
                     Label cell = new Label(values[col]);
@@ -352,7 +381,8 @@ public class RecipeDetailCardController implements Initializable {
                     cell.setPrefWidth(prefWidths[col]);
                     cell.setMaxWidth(Double.MAX_VALUE);
                     cell.getStyleClass().add("ingredient-row");
-                    if (row % 2 == 1) cell.getStyleClass().add("alt");
+                    if (row % 2 == 1)
+                        cell.getStyleClass().add("alt");
                     cell.setAlignment(javafx.geometry.Pos.TOP_LEFT);
                     cell.setMaxHeight(Double.MAX_VALUE);
                     cell.setStyle("-fx-border-color: #dee2e6; -fx-border-width: 0 0 1 0;");
@@ -362,7 +392,7 @@ public class RecipeDetailCardController implements Initializable {
                 }
             }
         }
-        // 让每列自动等宽
+
         for (int col = 0; col < 3; col++) {
             ColumnConstraints cc = new ColumnConstraints();
             cc.setMinWidth(minWidths[col]);

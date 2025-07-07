@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
  */
 public class ListViewController implements Initializable {
 
+    /** Logger for logging messages */
     private static final Logger LOGGER = Logger.getLogger(ListViewController.class.getName());
 
     /** Service for recipe operations */
@@ -158,7 +159,7 @@ public class ListViewController implements Initializable {
      */
     public void refreshListAndRetainSelection(int recipeIdToKeepSelected) {
         refreshList();
-        // Find and reselect the previously selected recipe
+
         for (RecipeSummaryResponse item : listView.getItems()) {
             if (item.getRecipeId() == recipeIdToKeepSelected) {
                 listView.getSelectionModel().select(item);

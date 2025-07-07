@@ -9,7 +9,10 @@ package g.model;
  * @since 2025-6-15
  */
 public class Category {
+    /** Category ID */
     private int categoryId;
+
+    /** Category name */
     private String categoryName;
 
     /**
@@ -67,6 +70,11 @@ public class Category {
         this.categoryName = categoryName.trim();
     }
 
+    /**
+     * Returns a string representation of the category.
+     * 
+     * @return a string representation of the category
+     */
     @Override 
     public String toString() {
         return "Category{" +
