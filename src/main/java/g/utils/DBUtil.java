@@ -18,6 +18,7 @@ import java.util.logging.Level;
  */
 public class DBUtil {
     
+    /** Logger for logging messages */
     private static final Logger LOGGER = Logger.getLogger(DBUtil.class.getName());
     
     /**
@@ -30,6 +31,12 @@ public class DBUtil {
      */
     private static String url;
 
+    /**
+     * Initializes the database path and copies the initial database from the jar resource
+     * (resources/data/cookbook.db) to the user's home directory ONLY IF the database does not exist.
+     * If the resource is not found, falls back to the file system data directory.
+     * This ensures the user gets the initial data only on first install/startup.
+     */
     static {
         initializeDatabasePath();
     }
