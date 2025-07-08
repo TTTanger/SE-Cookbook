@@ -14,6 +14,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+
+import java.io.File;
 
 /**
  * Controller for the recipe list view. This class handles the display and selection of recipes,
@@ -42,6 +45,9 @@ public class ListViewController implements Initializable {
 
     /** Callback for recipe selection events */
     private ActionCallback callback;
+
+    /** User image directory */
+    private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + ".cookbook" + File.separator + "imgs";
 
     /**
      * Constructor initializes the recipe and category services.
@@ -86,13 +92,72 @@ public class ListViewController implements Initializable {
         listView.setItems(observableList);
 
         listView.setCellFactory(lv -> new javafx.scene.control.ListCell<RecipeSummaryResponse>() {
+            private final javafx.scene.layout.VBox card = new javafx.scene.layout.VBox();
+            private final javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView();
+            private final javafx.scene.control.Label titleLabel = new javafx.scene.control.Label();
+            private final javafx.scene.layout.HBox contentBox = new javafx.scene.layout.HBox();
+            
+            {
+               
+                card.setStyle("-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 12; -fx-effect: dropshadow(gaussian, #dee2e6, 4, 0.1, 0, 2); -fx-cursor: hand;");
+                card.setSpacing(8);
+                
+                
+                imageView.setFitWidth(60);
+                imageView.setFitHeight(60);
+                imageView.setPreserveRatio(true);
+                imageView.setStyle("-fx-background-radius: 8;");
+                
+                
+                titleLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #343a40;");
+                titleLabel.setWrapText(true);
+                
+                
+                contentBox.setSpacing(12);
+                contentBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+                
+                contentBox.getChildren().addAll(imageView, titleLabel);
+                card.getChildren().add(contentBox);
+                
+                
+                card.setOnMouseEntered(e -> {
+                    card.setStyle("-fx-background-color: #f8f9fa; -fx-background-radius: 12; -fx-padding: 12; -fx-effect: dropshadow(gaussian, #a5d8ff, 8, 0.2, 0, 4); -fx-cursor: hand; -fx-scale-x: 1.02; -fx-scale-y: 1.02;");
+                });
+                
+                card.setOnMouseExited(e -> {
+                    card.setStyle("-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 12; -fx-effect: dropshadow(gaussian, #dee2e6, 4, 0.1, 0, 2); -fx-cursor: hand; -fx-scale-x: 1.0; -fx-scale-y: 1.0;");
+                });
+                
+                setGraphic(card);
+            }
+            
             @Override
             protected void updateItem(RecipeSummaryResponse item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
-                    setText(null);
+                    setGraphic(null);
                 } else {
-                    setText(item.getTitle());
+                    titleLabel.setText(item.getTitle());
+                    
+                    
+                    Image img = null;
+                    if (item.getImgAddr() != null && !item.getImgAddr().isEmpty()) {
+                        String imgFileName = item.getImgAddr();
+                        if (imgFileName.startsWith("imgs/")) {
+                            imgFileName = imgFileName.substring(5);
+                        }
+                        File imgFile = new File(USER_IMG_DIR + File.separator + imgFileName);
+                        if (imgFile.exists() && imgFile.isFile()) {
+                            img = new Image(imgFile.toURI().toString(), true);
+                        }
+                    }
+                    if (img != null) {
+                        imageView.setImage(img);
+                    } else {
+                        imageView.setImage(new Image(getClass().getResourceAsStream("/g/Upload_Img.png")));
+                    }
+                    
+                    setGraphic(card);
                 }
             }
         });

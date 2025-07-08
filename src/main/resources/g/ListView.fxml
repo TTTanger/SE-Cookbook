@@ -3,4 +3,7 @@
 <?import javafx.scene.control.ListView?>
 
 
-<ListView fx:id="listView" prefHeight="330.0" prefWidth="340.0" style="-fx-background-radius: 8; -fx-background-color: #fff; -fx-border-color: #dee2e6;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="g.controller.ListViewController" />
+<ListView fx:id="listView"
+          style="-fx-background-color: transparent; -fx-background-radius: 0; -fx-border-width: 0; -fx-padding: 8;" 
+          xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+          fx:controller="g.controller.ListViewController" />

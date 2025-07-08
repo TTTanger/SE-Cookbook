@@ -138,3 +138,24 @@
     -fx-scale-x: 1.05 !important;
     -fx-scale-y: 1.05 !important;
 }
+
+.list-view, .list-cell {
+    -fx-background-color: transparent !important;
+    -fx-control-inner-background: transparent !important;
+    -fx-background-insets: 0 !important;
+    -fx-padding: 0 !important;
+    -fx-border-width: 0 !important;
+}
+.list-cell {
+    -fx-padding: 0 4 6 4 !important;  
+    -fx-background-insets: 0 !important;
+    -fx-background-radius: 0 !important;
+    -fx-overflow-x: hidden !important;
+}
+.list-cell:filled:selected, .list-cell:filled:selected:focused {
+    -fx-background-color: linear-gradient(to bottom, #228be6, #1971c2) !important;
+    -fx-text-fill: #fff !important;
+    -fx-background-radius: 12 !important;
+    -fx-font-weight: bold !important;
+    -fx-effect: dropshadow(gaussian, #a5d8ff, 8, 0.2, 0, 2) !important;
+}

@@ -1,6 +1,10 @@
 package g.utils;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -200,66 +204,38 @@ public class DBUtil {
      */
     public static void initializeUserImageDirectory() {
         try {
-            String userImgDir = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "cookbook" + File.separator + "imgs";
+            String userImgDir = System.getProperty("user.home") + File.separator + ".cookbook" + File.separator + "imgs";
             File userDir = new File(userImgDir);
             if (!userDir.exists()) {
                 userDir.mkdirs();
             }
-            
-            // Copy initial images
-            String[] initialImages = {
-                "20250628162751870.png",
-                "20250628162804511.png", 
-                "20250628162827181.png",
-                "20250628162852335.png",
-                "20250628163755905.png",
-                "20250628164943332.png",
-                "20250628165647014.png",
-                "20250628170256916.png"
-            };
-            
-            int copiedCount = 0;
-            for (String imageName : initialImages) {
-                File destFile = new File(userDir, imageName);
-                if (!destFile.exists()) {
-                    java.net.URL imageUrl = null;
-                    
-                    String[] resourcePaths = {
-                        "imgs/" + imageName,
-                        "/imgs/" + imageName,
-                        "g/imgs/" + imageName,
-                        "/g/imgs/" + imageName
-                    };
-                    
-                    for (String path : resourcePaths) {
-                        imageUrl = DBUtil.class.getClassLoader().getResource(path);
-                        if (imageUrl != null) {
-                            System.out.println("Found image at: " + path);
-                            break;
-                        }
-                    }
-                    
-                    if (imageUrl != null) {
-                        try (java.io.InputStream in = imageUrl.openStream();
-                             java.io.FileOutputStream out = new java.io.FileOutputStream(destFile)) {
-                            byte[] buffer = new byte[1024];
-                            int length;
-                            while ((length = in.read(buffer)) > 0) {
-                                out.write(buffer, 0, length);
+            InputStream listStream = DBUtil.class.getResourceAsStream("/g/imgs/images.txt");
+            if (listStream != null) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(listStream));
+                String imageName;
+                int copiedCount = 0;
+                while ((imageName = reader.readLine()) != null) {
+                    imageName = imageName.trim();
+                    if (imageName.isEmpty()) continue;
+                    File destFile = new File(userDir, imageName);
+                    if (!destFile.exists()) {
+                        InputStream in = DBUtil.class.getResourceAsStream("/g/imgs/" + imageName);
+                        if (in != null) {
+                            FileOutputStream out = new FileOutputStream(destFile);
+                            byte[] buffer = new byte[4096];
+                            int len;
+                            while ((len = in.read(buffer)) != -1) {
+                                out.write(buffer, 0, len);
                             }
+                            in.close();
+                            out.close();
+                            copiedCount++;
                         }
-                        System.out.println("Copied initial image: " + imageName);
-                        copiedCount++;
-                    } else {
-                        System.err.println("Could not find image resource: " + imageName);
                     }
                 }
+                reader.close();
             }
-            
-            System.out.println("Image initialization completed. Copied " + copiedCount + " images.");
-            
         } catch (Exception e) {
-            System.err.println("Failed to initialize user image directory: " + e.getMessage());
             e.printStackTrace();
         }
     }

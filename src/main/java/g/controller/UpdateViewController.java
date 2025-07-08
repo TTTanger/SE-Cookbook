@@ -97,7 +97,7 @@ public class UpdateViewController {
     private Label imgHint;
 
     /** User image directory */
-    private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "cookbook" + File.separator + "imgs";
+    private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + ".cookbook" + File.separator + "imgs";
 
     /**
      * Constructor initializes the recipe service.

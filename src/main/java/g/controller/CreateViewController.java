@@ -74,7 +74,7 @@ public class CreateViewController {
     @FXML
     private Label imgHint;
     /** User image directory */
-    private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "cookbook" + File.separator + "imgs";
+    private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + ".cookbook" + File.separator + "imgs";
 
     /**
      * Constructor initializes the recipe service.
@@ -244,6 +244,7 @@ public class CreateViewController {
         File file = fileChooser.showOpenDialog(uploadButton.getScene().getWindow());
         if (file != null) {
             try {
+                
                 String ext = file.getName().substring(file.getName().lastIndexOf('.'));
                 String newName = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()) + ext;
                 File imgsDir = new File(USER_IMG_DIR);
@@ -252,7 +253,8 @@ public class CreateViewController {
                 }
                 File dest = new File(imgsDir, newName);
                 Files.copy(file.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                uploadedImgPath = newName; 
+                uploadedImgPath = newName;
+                System.out.println("uploadedImgPath: " + uploadedImgPath);
                 imgPreview.setImage(new Image(dest.toURI().toString()));
                 imgHint.setVisible(false);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Image uploaded successfully!", ButtonType.OK);

@@ -14,7 +14,7 @@
     <left>
         <VBox fx:id="leftPane" spacing="16.0" style="-fx-padding: 18 10 18 18; -fx-min-width: 260;">
             <fx:include fx:id="searchBar" source="SearchBar.fxml" />
-            <fx:include fx:id="listView" source="ListView.fxml" />
+            <fx:include fx:id="listView" source="ListView.fxml" VBox.vgrow="ALWAYS" />
             <Button fx:id="createRecipeButton" text="Create Recipe" onAction="#onCreateClicked"
                 style="-fx-background-radius: 8; -fx-background-color: #e7f5ff; -fx-text-fill: #228be6; -fx-font-size: 15px;" />
         </VBox>

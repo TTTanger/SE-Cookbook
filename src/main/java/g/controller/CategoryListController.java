@@ -82,13 +82,30 @@ public class CategoryListController implements Initializable {
         listView.setItems(observableList);
 
         listView.setCellFactory(lv -> new javafx.scene.control.ListCell<CategoryResponse>() {
+            private final javafx.scene.layout.VBox card = new javafx.scene.layout.VBox();
+            private final javafx.scene.control.Label nameLabel = new javafx.scene.control.Label();
+            {
+                card.setStyle("-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16; -fx-effect: dropshadow(gaussian, #dee2e6, 4, 0.1, 0, 2); -fx-cursor: hand;");
+                card.setSpacing(4);
+                nameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #228be6;");
+                nameLabel.setWrapText(true);
+                card.getChildren().add(nameLabel);
+                card.setOnMouseEntered(e -> {
+                    card.setStyle("-fx-background-color: #f8f9fa; -fx-background-radius: 12; -fx-padding: 16; -fx-effect: dropshadow(gaussian, #a5d8ff, 8, 0.2, 0, 4); -fx-cursor: hand; -fx-scale-x: 1.02; -fx-scale-y: 1.02;");
+                });
+                card.setOnMouseExited(e -> {
+                    card.setStyle("-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16; -fx-effect: dropshadow(gaussian, #dee2e6, 4, 0.1, 0, 2); -fx-cursor: hand; -fx-scale-x: 1.0; -fx-scale-y: 1.0;");
+                });
+                setGraphic(card);
+            }
             @Override
             protected void updateItem(CategoryResponse item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
-                    setText(null);
+                    setGraphic(null);
                 } else {
-                    setText(item.getCategoryName()); 
+                    nameLabel.setText(item.getCategoryName());
+                    setGraphic(card);
                 }
             }
         });

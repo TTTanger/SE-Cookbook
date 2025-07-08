@@ -73,8 +73,12 @@ Thumbs.db
 # JavaFX SDK
 javafx-sdk*/
 
+# JavaFX Jmods
+javafx-jmods-21.0.7/
+
 # Executables
 *.exe
+*.msi
 
 
 # Misc

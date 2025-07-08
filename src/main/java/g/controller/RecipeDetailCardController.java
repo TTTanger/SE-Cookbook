@@ -53,8 +53,7 @@ public class RecipeDetailCardController implements Initializable {
     private int recipeId;
 
     /** User image directory */
-    private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + "Documents"
-            + File.separator + "cookbook" + File.separator + "imgs";
+    private static final String USER_IMG_DIR = System.getProperty("user.home") + File.separator + ".cookbook" + File.separator + "imgs";
 
     /** Update view controller */
     @FXML
@@ -188,28 +187,21 @@ public class RecipeDetailCardController implements Initializable {
         });
         updateIngredientsBox(recipeId, serveSpinner.getValue());
         instructionsLabel.setText(recipe.getInstruction());
+        Image img = null;
         if (recipe.getImgAddr() != null && !recipe.getImgAddr().isEmpty()) {
-            try {
-                Image img = null;
-                    String imgFileName = recipe.getImgAddr();
-                    if (imgFileName.startsWith("imgs/")) {
-                        imgFileName = imgFileName.substring(5);
-                    }
-                    File imgFile = new File(USER_IMG_DIR + File.separator + imgFileName);
-                    if (imgFile.exists()) {
-                        img = new Image(imgFile.toURI().toString(), true);
-                    } else {
-                        File oldImgFile = new File("imgs" + File.separator + imgFileName);
-                        if (oldImgFile.exists()) {
-                            img = new Image(oldImgFile.toURI().toString(), true);
-                    }
-                }
-                imgView.setImage(img);
-            } catch (Exception e) {
-                imgView.setImage(null);
+            String imgFileName = recipe.getImgAddr();
+            if (imgFileName.startsWith("imgs/")) {
+                imgFileName = imgFileName.substring(5);
             }
+            File imgFile = new File(USER_IMG_DIR + File.separator + imgFileName);
+            if (imgFile.exists() && imgFile.isFile()) {
+                img = new Image(imgFile.toURI().toString(), true);
+            }
+        }
+        if (img != null) {
+            imgView.setImage(img);
         } else {
-            imgView.setImage(null);
+            imgView.setImage(new Image(getClass().getResourceAsStream("/g/Upload_Img.png")));
         }
         showRecipeDetail();
     }
