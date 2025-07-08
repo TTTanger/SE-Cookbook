@@ -6,21 +6,30 @@ package g.model;
  * its title, preparation and cooking times, instructions, image address,
  * and serving size.
  * 
- * @author Xinyuan Jiang
+ * @author Junzhe Luo
  * @since 2025-6-15
  */
 public class Recipe {
     
-    /**
-     * Unique identifier for the recipe.
-     * This field is used to identify the recipe in the database.
-     */
+    /** Unique identifier for the recipe.*/
     private int recipeId;
+
+    /** Recipe title */
     private String title;
+
+    /** Preparation time */
     private int prepTime;
+
+    /** Cooking time */
     private int cookTime;
+
+    /** Cooking instructions */
     private String instruction;
+
+    /** Image address */
     private String imgAddr;
+
+    /** Serving size */
     private int serve;
 
     /**

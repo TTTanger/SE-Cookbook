@@ -65,23 +65,25 @@
     -fx-padding: 8;
 }
 
-.button {
-    -fx-background-radius: 8;
-    -fx-font-size: 16px;
-    -fx-padding: 6 18 6 18;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, #dee2e6, 2, 0.1, 0, 1);
-    -fx-background-color: #e7f5ff;
-    -fx-text-fill: #228be6;
-    -fx-background-insets: 0;
-    -fx-border-insets: 0;
-    -fx-transition: all 0.2s;
+.button, Button {
+    -fx-background-radius: 8 !important;
+    -fx-font-size: 16px !important;
+    -fx-padding: 6 18 6 18 !important;
+    -fx-cursor: hand !important;
+    -fx-effect: dropshadow(gaussian, #dee2e6, 2, 0.1, 0, 1) !important;
+    -fx-background-color: #e7f5ff !important;
+    -fx-text-fill: #228be6 !important;
+    -fx-background-insets: 0 !important;
+    -fx-border-insets: 0 !important;
+    -fx-border-width: 0 !important;
+    -fx-transition: all 0.2s !important;
+    -fx-border-color: transparent !important;
 }
-.button:hover {
-    -fx-background-color: #d0ebff;
-    -fx-effect: dropshadow(gaussian, #a5d8ff, 8, 0.2, 0, 2);
-    -fx-scale-x: 1.04;
-    -fx-scale-y: 1.04;
+.button:hover, Button:hover {
+    -fx-background-color: #d0ebff !important;
+    -fx-effect: dropshadow(gaussian, #a5d8ff, 8, 0.2, 0, 2) !important;
+    -fx-scale-x: 1.04 !important;
+    -fx-scale-y: 1.04 !important;
 }
 
 

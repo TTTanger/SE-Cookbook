@@ -293,8 +293,10 @@ public class CreateViewController {
         TextField unitField = new TextField();
         unitField.setPromptText("Unit");
         Button addButton = new Button("+");
+        addButton.getStyleClass().add("button");
         addButton.setOnAction(e -> addIngredient());
         Button removeBtn = new Button("-");
+        removeBtn.getStyleClass().add("button");
         removeBtn.setOnAction(e -> {
             if (ingredientContainer.getChildren().size() > 1) {
                 ingredientContainer.getChildren().remove(entry);

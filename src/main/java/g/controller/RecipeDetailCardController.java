@@ -191,17 +191,17 @@ public class RecipeDetailCardController implements Initializable {
         if (recipe.getImgAddr() != null && !recipe.getImgAddr().isEmpty()) {
             try {
                 Image img = null;
-                String imgFileName = recipe.getImgAddr();
-                if (imgFileName.startsWith("imgs/")) {
-                    imgFileName = imgFileName.substring(5);
-                }
-                File imgFile = new File(USER_IMG_DIR + File.separator + imgFileName);
-                if (imgFile.exists()) {
-                    img = new Image(imgFile.toURI().toString(), true);
-                } else {
-                    File oldImgFile = new File("imgs" + File.separator + imgFileName);
-                    if (oldImgFile.exists()) {
-                        img = new Image(oldImgFile.toURI().toString(), true);
+                    String imgFileName = recipe.getImgAddr();
+                    if (imgFileName.startsWith("imgs/")) {
+                        imgFileName = imgFileName.substring(5);
+                    }
+                    File imgFile = new File(USER_IMG_DIR + File.separator + imgFileName);
+                    if (imgFile.exists()) {
+                        img = new Image(imgFile.toURI().toString(), true);
+                    } else {
+                        File oldImgFile = new File("imgs" + File.separator + imgFileName);
+                        if (oldImgFile.exists()) {
+                            img = new Image(oldImgFile.toURI().toString(), true);
                     }
                 }
                 imgView.setImage(img);
@@ -247,6 +247,8 @@ public class RecipeDetailCardController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/g/UpdateView.fxml"));
             Parent root = loader.load();
             this.updateViewController = loader.getController();
+            Scene scene = new Scene(root, 1000, 600);
+            scene.getStylesheets().add(getClass().getResource("/g/app.css").toExternalForm());
             RecipeDetailResponse recipeDetail = recipeService.getRecipeById(recipeId);
             updateViewController.setPreviousData(recipeDetail);
             updateViewController.setUpdateCallback(() -> {
@@ -257,7 +259,7 @@ public class RecipeDetailCardController implements Initializable {
             });
             Stage stage = new Stage();
             stage.setTitle("Update Recipe");
-            stage.setScene(new Scene(root, 1000, 600));
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -337,7 +339,7 @@ public class RecipeDetailCardController implements Initializable {
         grid.setHgap(0);
         grid.setVgap(0);
         String[] headers = { "Name", "Amount", "Unit" };
-        int[] minWidths = { 160, 60, 80 }; // name, amount, unit
+        int[] minWidths = { 160, 60, 80 }; 
         int[] prefWidths = { 200, 80, 100 };
         for (int col = 0; col < 3; col++) {
             Label header = new Label(headers[col]);

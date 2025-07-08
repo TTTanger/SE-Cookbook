@@ -5,7 +5,7 @@ package g.model;
  * This class encapsulates the basic information about a recipe category
  * including its unique identifier and name.
  * 
- * @author Xinyuan Jiang
+ * @author Junzhe Luo
  * @since 2025-6-15
  */
 public class Category {
@@ -15,6 +15,8 @@ public class Category {
      * This field is used to identify the category in the database.
      */
     private int categoryId;
+
+    /** Category name */
     private String categoryName;
 
     /**

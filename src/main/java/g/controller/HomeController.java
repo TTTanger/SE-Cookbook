@@ -122,6 +122,8 @@ public class HomeController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/g/CreateView.fxml"));
             Parent root = loader.load();
+            Scene scene = new Scene(root, 1000, 600);
+            scene.getStylesheets().add(getClass().getResource("/g/app.css").toExternalForm());
             CreateViewController controller = loader.getController();
             
             controller.setOnCreateSuccess(() -> {
@@ -131,7 +133,7 @@ public class HomeController implements Initializable {
             
             Stage stage = new Stage();
             stage.setTitle("Create Recipe");
-            stage.setScene(new Scene(root, 1000, 600));
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to load CreateView.fxml page", e);

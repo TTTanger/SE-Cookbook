@@ -5,19 +5,24 @@ package g.model;
  * This class encapsulates the information about an ingredient including
  * its name, amount, unit, and its relationship to a recipe.
  * 
- * @author Xinyuan Jiang
+ * @author Junzhe Luo
  * @since 2025-6-15
  */
 public class Ingredient {
 
-    /**
-     * Unique identifier for the ingredient-recipe pair.
-     * This field is used to identify the relationship between an ingredient and a recipe.
-     */
+    /** Unique identifier for the ingredient-recipe pair.*/
     private int pairId;
+
+    /** Recipe ID */
     private int recipeId;
+
+    /** Ingredient name */
     private String ingredientName;
+
+    /** Ingredient amount */
     private int ingredientAmount;
+
+    /** Ingredient unit */
     private String ingredientUnit;
 
     /**

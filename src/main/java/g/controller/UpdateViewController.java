@@ -163,9 +163,11 @@ public class UpdateViewController {
                 unitField.setPromptText("Unit");
 
                 Button addButton = new Button("+");
+                addButton.getStyleClass().add("button");
                 addButton.setOnAction(e -> addIngredient());
 
                 Button removeBtn = new Button("-");
+                removeBtn.getStyleClass().add("button");
                 removeBtn.setOnAction(e -> {
                     if (ingredientContainer.getChildren().size() > 1) {
                         Integer ingId = (Integer) entry.getUserData();
@@ -279,9 +281,11 @@ public class UpdateViewController {
         unitField.setPromptText("Unit");
 
         Button addButton = new Button("+");
+        addButton.getStyleClass().add("button");
         addButton.setOnAction(e -> addIngredient());
 
         Button removeBtn = new Button("-");
+        removeBtn.getStyleClass().add("button");
         removeBtn.setOnAction(e -> {
             if (ingredientContainer.getChildren().size() > 1) {
                 Integer ingId = (Integer) entry.getUserData();

@@ -21,11 +21,19 @@ import javafx.scene.image.Image;
  */
 public class App extends Application {
 
+    /** Scene for the application */
     private static Scene scene;
     
+    /** Window width */
     private static final int WINDOW_WIDTH = 1350;
+
+    /** Window height */
     private static final int WINDOW_HEIGHT = 800;
+
+    /** Minimum window width */
     private static final int MIN_WIDTH = 1280;
+
+    /** Minimum window height */
     private static final int MIN_HEIGHT = 960;
 
     /**
@@ -40,7 +48,11 @@ public class App extends Application {
         System.out.println("Starting JavaFX application...");
         
         scene = new Scene(loadFXML("main"), WINDOW_WIDTH, WINDOW_HEIGHT);
+        
+        scene.getStylesheets().clear();
         scene.getStylesheets().add(getClass().getResource("/g/app.css").toExternalForm());
+        
+        System.setProperty("javafx.userAgentStylesheetUrl", "");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/g/cookbook.ico")));
         stage.setScene(scene);
         stage.setMinWidth(MIN_WIDTH); 
