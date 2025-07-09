@@ -296,7 +296,6 @@ public class RecipeDetailCardController implements Initializable {
             Parent root = loader.load();
             AddRecipeToCategoryController controller = loader.getController();
             controller.setRecipeId(recipeId);
-            // 新增：设置归类成功回调
             controller.setOnCategorized(() -> {
                 if (callback != null) {
                     callback.onRecipeCategorized();
@@ -320,7 +319,7 @@ public class RecipeDetailCardController implements Initializable {
 
         void onRecipeUpdated(int recipeId);
 
-        void onRecipeCategorized(); // 新增
+        void onRecipeCategorized(); 
         void onBack();
     }
 
