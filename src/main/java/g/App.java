@@ -28,13 +28,13 @@ public class App extends Application {
     private static final int WINDOW_WIDTH = 1350;
 
     /** Window height */
-    private static final int WINDOW_HEIGHT = 800;
+    private static final int WINDOW_HEIGHT = 900;
 
     /** Minimum window width */
     private static final int MIN_WIDTH = 1280;
 
     /** Minimum window height */
-    private static final int MIN_HEIGHT = 960;
+    private static final int MIN_HEIGHT = 400;
 
     /**
      * Initializes and displays the main application window.

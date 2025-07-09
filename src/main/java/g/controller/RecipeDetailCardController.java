@@ -34,6 +34,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.ColumnConstraints;
+import g.service.CategoryService;
 
 /**
  * Controller for the recipe detail card view. Handles the display and
@@ -279,6 +280,16 @@ public class RecipeDetailCardController implements Initializable {
      */
     @FXML
     public void onRecipeCategorizeClicked(ActionEvent event) {
+        // 检查分类是否为空
+        CategoryService categoryService = new CategoryService();
+        if (categoryService.getAllCategories().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Create Category First");
+            alert.showAndWait();
+            return;
+        }
         System.out.println("Recipe categorize button clicked for recipe ID: " + recipeId);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/g/AddRecipeToCategory.fxml"));
