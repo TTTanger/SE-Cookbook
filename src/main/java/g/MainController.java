@@ -13,18 +13,33 @@ import javafx.scene.layout.StackPane;
  * @since 2025-6-15
  */
 public class MainController {
-    
+    /**
+     * The main content pane that holds the home and category pages.
+     */
     @FXML 
     private StackPane contentPane;
     
+    /**
+     * The home page node.
+     */
     @FXML 
     private Node homePage;
     
+    /**
+     * The category page node.
+     */
     @FXML 
     private Node categoryPage;
 
+    /**
+     * The controller for the home page.
+     */
     @FXML
     private g.controller.HomeController homePageController;
+
+    /**
+     * The controller for the category page.
+     */
     @FXML
     private g.controller.CategoryViewController categoryPageController;
 
