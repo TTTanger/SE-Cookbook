@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <HBox prefHeight="800.0" prefWidth="1350.0" spacing="18.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="g.controller.CategoryViewController">
-    <VBox fx:id="leftPane" prefHeight="800.0" prefWidth="205.0" spacing="18.0" style="-fx-padding: 24 16 24 24; -fx-background-color: #e9ecef; -fx-background-radius: 12;" HBox.hgrow="ALWAYS">
+    <VBox fx:id="leftPane" prefHeight="800.0" prefWidth="220.0" spacing="18.0" style="-fx-padding: 24 16 24 24; -fx-background-color: #e9ecef; -fx-background-radius: 12;" HBox.hgrow="ALWAYS">
         <Label fx:id="leftEmptyLabel" managed="false" style="-fx-font-size: 16px; -fx-text-fill: #adb5bd;" text="Create a Category" visible="false" />
         <fx:include fx:id="categoryList" source="CategoryList.fxml" VBox.vgrow="ALWAYS" />
         <Button fx:id="createCategoryButton" onAction="#onCreateClicked" styleClass="button" text="Create Category" />
