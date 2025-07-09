@@ -91,6 +91,11 @@ public class HomeController implements Initializable {
             public void onRecipeUpdated(int recipeId) {
                 listViewController.refreshListAndRetainSelection(recipeId);
             }
+
+            @Override
+            public void onRecipeCategorized() {
+                listViewController.refreshList();
+            }
             
             @Override
             public void onBack() {

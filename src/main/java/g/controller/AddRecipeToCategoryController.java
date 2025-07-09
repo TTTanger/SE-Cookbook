@@ -45,6 +45,11 @@ public class AddRecipeToCategoryController implements Initializable {
     /** Record initially selected categories */
     private List<CategoryResponse> originalCategories = List.of();
 
+    private Runnable onCategorized;
+    public void setOnCategorized(Runnable onCategorized) {
+        this.onCategorized = onCategorized;
+    }
+
     /**
      * Initializes the controller. Category loading is delayed until setRecipeId is called.
      * 
@@ -136,6 +141,9 @@ public class AddRecipeToCategoryController implements Initializable {
 
             LOGGER.info("Categories updated successfully for recipe: " + recipeId);
             showAlert("Success", "Categories updated!");
+            if (onCategorized != null) {
+                onCategorized.run();
+            }
             closeWindow();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error confirming category changes for recipe: " + recipeId, e);

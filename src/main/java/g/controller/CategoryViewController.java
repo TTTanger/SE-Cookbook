@@ -104,6 +104,10 @@ public class CategoryViewController implements Initializable {
                 recipeDetailCardController.loadRecipeData(recipeId);
             }
             @Override
+            public void onRecipeCategorized() {
+                listViewController.loadRecipesByCategory(currentCategoryId);
+            }
+            @Override
             public void onBack() {
                 recipeDetailCardController.showEmptyMessage();
             }
