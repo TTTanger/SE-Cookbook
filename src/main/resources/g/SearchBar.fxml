@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 
-<HBox fx:controller="g.controller.SearchBarController" xmlns="http://javafx.com/javafx/11.0.1"
-      xmlns:fx="http://javafx.com/fxml/1"
-      spacing="10" alignment="CENTER_LEFT"
-      style="-fx-padding: 10 16; -fx-background-color: #f8f9fa; -fx-background-radius: 8;">
-    <TextField fx:id="searchField" promptText="Search..." HBox.hgrow="ALWAYS"
-               style="-fx-background-radius: 8; -fx-font-size: 14px;"/>
+<HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10 16; -fx-background-color: #ffffff; -fx-background-radius: 8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="g.controller.SearchBarController">
+    <TextField fx:id="searchField" promptText="Search..." style="-fx-background-radius: 8; -fx-font-size: 14px;" HBox.hgrow="ALWAYS" />
     <Button fx:id="clearButton" onAction="#clearSearch" styleClass="button" text="✕" />
     <Button fx:id="searchButton" onAction="#performSearch" styleClass="button" text="🔍" />
 </HBox>

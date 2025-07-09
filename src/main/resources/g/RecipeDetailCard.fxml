@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="Infinity" maxWidth="Infinity" spacing="0" styleClass="card" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="g.controller.RecipeDetailCardController">
+<VBox spacing="0" styleClass="card" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="g.controller.RecipeDetailCardController">
    <children>
       <AnchorPane fx:id="emptyPane" managed="true" visible="true" VBox.vgrow="ALWAYS">
          <Label fx:id="emptyLabel" alignment="CENTER" style="-fx-font-size: 22px; -fx-text-fill: #adb5bd;" text="Select a Recipe" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />

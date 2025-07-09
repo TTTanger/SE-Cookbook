@@ -1,36 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:controller="g.controller.HomeController"
-    xmlns="http://javafx.com/javafx/23.0.1"
-    xmlns:fx="http://javafx.com/fxml/1"
-    prefHeight="600.0" prefWidth="1200.0">
+<BorderPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="g.controller.HomeController">
 
     <left>
         <VBox fx:id="leftPane" spacing="16.0" style="-fx-padding: 18 10 18 18; -fx-min-width: 260;">
             <fx:include fx:id="searchBar" source="SearchBar.fxml" />
             <fx:include fx:id="listView" source="ListView.fxml" VBox.vgrow="ALWAYS" />
-            <Button fx:id="createRecipeButton" text="Create Recipe" onAction="#onCreateClicked"
-                style="-fx-background-radius: 8; -fx-background-color: #e7f5ff; -fx-text-fill: #228be6; -fx-font-size: 15px;" />
+            <Button fx:id="createRecipeButton" onAction="#onCreateClicked" style="-fx-background-radius: 8; -fx-background-color: #e7f5ff; -fx-text-fill: #228be6; -fx-font-size: 15px;" text="Create Recipe" />
         </VBox>
     </left>
 
     <center>
         <StackPane fx:id="centerPane">
-            <VBox fx:id="emptyPane" alignment="CENTER" spacing="10" visible="true" managed="true"
-                style="-fx-background-color: white; -fx-border-radius: 16; -fx-background-radius: 16;"
-                maxWidth="Infinity" maxHeight="Infinity">
-                <Label text="Please Select a Recipe"
-                    style="-fx-font-size: 22px; -fx-text-fill: #868e96;" />
+            <VBox fx:id="emptyPane" alignment="CENTER" managed="true" maxHeight="Infinity" maxWidth="Infinity" spacing="10" style="-fx-background-color: white; -fx-border-radius: 16; -fx-background-radius: 16;" visible="true">
+                <Label style="-fx-font-size: 22px; -fx-text-fill: #868e96;" text="Please Select a Recipe" />
             </VBox>
 
-            <fx:include fx:id="recipeDetailCard" source="RecipeDetailCard.fxml"
-                        maxWidth="Infinity" maxHeight="Infinity"/>
+            <fx:include fx:id="recipeDetailCard" maxHeight="Infinity" maxWidth="Infinity" source="RecipeDetailCard.fxml" />
         </StackPane>
     </center>
 
