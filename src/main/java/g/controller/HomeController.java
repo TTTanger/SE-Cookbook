@@ -166,4 +166,13 @@ public class HomeController implements Initializable {
         recipeDetailCard.setVisible(true);
         recipeDetailCard.setManaged(true);
     }
+
+    /**
+     * Refreshes the data when Home is shown.
+     */
+    public void refreshData() {
+        if (listViewController != null) {
+            listViewController.refreshList();
+        }
+    }
 }

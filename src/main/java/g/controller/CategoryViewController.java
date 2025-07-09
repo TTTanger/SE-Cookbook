@@ -318,4 +318,18 @@ public class CategoryViewController implements Initializable {
         alert.setHeaderText(null);
         alert.showAndWait();
     }
+
+    /**
+     * Refreshes the data when CategoryView is shown.
+     */
+    public void refreshData() {
+        if (categoryListController != null) {
+            categoryListController.refreshList();
+        }
+        if (listViewController != null && currentCategoryId > 0) {
+            listViewController.loadRecipesByCategory(currentCategoryId);
+        } else if (listViewController != null) {
+            listViewController.clearList();
+        }
+    }
 }

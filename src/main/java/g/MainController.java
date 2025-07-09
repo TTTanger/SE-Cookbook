@@ -23,6 +23,11 @@ public class MainController {
     @FXML 
     private Node categoryPage;
 
+    @FXML
+    private g.controller.HomeController homePageController;
+    @FXML
+    private g.controller.CategoryViewController categoryPageController;
+
     /**
      * Initializes the controller after FXML loading.
      * Sets up the initial view to show the home page.
@@ -40,6 +45,9 @@ public class MainController {
     private void showHome() {
         homePage.setVisible(true);
         categoryPage.setVisible(false);
+        if (homePageController != null) {
+            homePageController.refreshData();
+        }
     }
 
     /**
@@ -50,5 +58,8 @@ public class MainController {
     private void showCategory() {
         homePage.setVisible(false);
         categoryPage.setVisible(true);
+        if (categoryPageController != null) {
+            categoryPageController.refreshData();
+        }
     }
 }
